@@ -1,0 +1,23 @@
+# Eclipse workspace metadata (local to this machine)
+.metadata/
+
+# Compiled output
+**/build/
+**/bin/
+**/target/
+*.class
+
+# Eclipse project files
+.settings/
+.classpath
+.project
+
+# Packaged artifacts
+*.war
+*.jar
+*.ear
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+*.log
