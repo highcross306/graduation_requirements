@@ -1,5 +1,7 @@
 # Eclipse workspace metadata (local to this machine)
 .metadata/
+RemoteSystemsTempFiles/
+Servers/
 
 # Compiled output
 **/build/
@@ -7,15 +9,12 @@
 **/target/
 *.class
 
-# Eclipse project files
-.settings/
-.classpath
-.project
-
 # Packaged artifacts
 *.war
 *.jar
 *.ear
+# 라이브러리 jar는 팀원이 그대로 받아야 하므로 추적
+!**/WEB-INF/lib/*.jar
 
 # OS / editor files
 .DS_Store
