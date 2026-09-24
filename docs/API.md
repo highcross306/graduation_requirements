@@ -1,6 +1,6 @@
 # 졸업요건 앱 API (BE A: 데이터·조회)
 
-모든 API는 `GET`, 응답은 `application/json; charset=UTF-8`. FE에서는 상대 경로(`api/...`)로 호출한다.
+모든 API는 `GET`, 응답은 오류를 포함해 항상 `application/json; charset=UTF-8`. FE에서는 상대 경로(`api/...`)로 호출한다.
 데이터는 서버 시작 때 `WEB-INF/data`에서 한 번 읽는다 (`DataLoader`). 데이터를 바꾸면 서버를 다시 시작해야 한다.
 
 ## 오류 응답 (와이어프레임 예외 B)
@@ -12,7 +12,8 @@
 | 상태 | error | 언제 |
 |---|---|---|
 | 400 | `BAD_REQUEST` | 필수 파라미터 없음, 값 형식·범위 오류 |
-| 404 | `NOT_FOUND` | 없는 교과과정 id, 학기, 분반 |
+| 404 | `NOT_FOUND` | 없는 교과과정 id, 학기, 분반, `/api/` 아래 없는 경로 (예: 끝에 `/`) |
+| 405 | `METHOD_NOT_ALLOWED` | 조회 API 를 GET 외 메서드로 호출 |
 | 503 | `DATA_UNAVAILABLE` | 서버 시작 때 데이터 로딩 실패 → "학과 정보를 불러올 수 없어요" 팝업 |
 | 500 | `INTERNAL_ERROR` | 그 밖의 서버 오류 |
 
@@ -55,7 +56,7 @@
 
 | 파라미터 | 필수 | 설명 |
 |---|---|---|
-| `curriculum` 또는 `year` | ✅ 둘 중 하나 | 교과과정 적용연도 (입학연도) |
+| `curriculum` 또는 `year` | ✅ 둘 중 하나 | 교과과정 적용연도 (입학연도). 둘 다 보내면 연도가 같아야 함 (다르면 400) |
 | `category` | | `중점교양` `기초교양` `핵심교양` `일반교양` `창의` |
 | `area` | | 영역 번호 1~7 (핵심·일반교양) |
 | `offered` | | `true`면 이번 학기 개설 과목만 |
@@ -89,6 +90,7 @@
 - 결과 없음: `count: 0`, `results: []` (200). 화면에서 예외 C 문구를 띄운다.
 - `countsAs`(담기면 인정): 우리 학과 과목 → 교과과정 이수구분, 교양 → `"교양"`(영역은 `generalEducation`), 그 외 → `"일반선택"`.
 - `source`: `curriculum` → `generalEducation` → `otherCurriculum` → `timetable` 순으로 정렬.
+- `scope=other`에는 내 학과 교과과정에 있는 과목이 나오지 않음 (두 학과 공통 과목인 일반수학 등).
 - 교양 목록에 없고 시간표에만 있는 교양(예: GED1002)은 학수번호로 영역을 정한다 (GED n = 핵심 n영역, GEE n = 일반 n영역).
 
 ## GET /api/requirements — 02 "전필? 교필? 한눈에 보기", 02-1 가이드
@@ -123,8 +125,8 @@
 
 | 파라미터 | 필수 | 설명 |
 |---|---|---|
-| `term` | | `2026-2` 형식. 없으면 최신 학기 |
-| `codes` | | 학수번호 쉼표 목록. 없으면 전체 분반(527개, 약 400KB) |
+| `term` | | `2026-2` 형식. 없으면 최신 학기 (학기 순서로 판단) |
+| `codes` | | 학수번호 쉼표 목록, 대소문자 무시. 없으면 전체 분반(527개, 약 400KB) |
 
 ```json
 { "term": "2026-2", "availableTerms": ["2026-2"], "count": 3, "sections": [
@@ -140,8 +142,8 @@
 
 | 파라미터 | 필수 | 설명 |
 |---|---|---|
-| `sections` | ✅ | 분반 id 쉼표 목록 (예: `AIE1002-001,GEB1107-021`) |
-| `candidate` | | 새로 담으려는 분반 id. 있으면 `sections`와 겹치는지만 검사 |
+| `sections` | ✅ | 분반 id 쉼표 목록 (예: `AIE1002-001,GEB1107-021`). 대소문자 무시, 중복은 한 번으로 침 |
+| `candidate` | | 새로 담으려는 분반 id. 있으면 `sections`와 겹치는지만 검사. `sections`에 들어 있어도 자기 자신과는 비교하지 않음 |
 | `term` | | 없으면 최신 학기 |
 
 ```json
@@ -163,4 +165,6 @@ List<GeneralEducationCourse> ge = store.generalEducation(2025);
 boolean open = store.offeredThisTerm("AIE2001");          // 최신 시간표에 분반이 있는지
 ```
 - `findCourse` 찾는 순서: 내 학과 교과과정 → 교양 목록 → 다른 학과 교과과정 → 최신 시간표. 없으면 `Optional.empty()`.
+- 모델의 목록·맵은 읽기 전용이다. `add`/`remove` 하면 `UnsupportedOperationException`. 가공이 필요하면 `new ArrayList<>(...)`로 복사해서 쓴다.
+- `null`인 목록은 의미가 있다: 핵심교양 `Area.courses == null`이면 영역 안 아무 과목이나 인정.
 - 시간 겹침은 `service.TimetableService.conflicts(...)`.
