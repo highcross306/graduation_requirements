@@ -49,6 +49,9 @@ public final class TimetableService {
 
 	private static List<Timetable.Slot> overlaps(Timetable.Section x, Timetable.Section y) {
 		List<Timetable.Slot> result = new ArrayList<>();
+		if (x.id().equals(y.id())) {
+			return result; // 같은 분반끼리는 겹침이 아니다
+		}
 		for (Timetable.Slot a : x.slots()) {
 			for (Timetable.Slot b : y.slots()) {
 				if (a.overlaps(b)) {
