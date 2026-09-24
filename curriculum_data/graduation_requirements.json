@@ -1,0 +1,837 @@
+{
+  "_meta": {
+    "description": "인하대 학과·입학연도별 졸업요건 규칙 (졸업요건 앱용 원천 데이터)",
+    "collectedAt": "2026-09-24",
+    "sources": {
+      "curriculum": "https://sugang.inha.ac.kr/sugang/SU_51001/curriculum_all.aspx",
+      "generalEducation": "https://newdept.inha.ac.kr/generaledu/16885/subview.do",
+      "microMajor": "https://swuniv.inha.ac.kr/swuniv/12694/subview.do"
+    },
+    "courseCodesResolveIn": [
+      "<dept>_<year>_courses.csv",
+      "general_education_courses.csv"
+    ]
+  },
+  "programs": [
+    {
+      "departmentCode": "AIE",
+      "departmentName": "인공지능공학과",
+      "admissionYear": 2025,
+      "curriculumFile": "aie_2025_courses.csv",
+      "totalCredits": 130,
+      "majorCredits": {
+        "single": 65,
+        "double": 39,
+        "minor": 48,
+        "note": "단일(심화)전공 65 / 다중전공 39 / 부전공 48 (교과과정표 상단)"
+      },
+      "majorRequired": {
+        "courses": [
+          "AIE1001",
+          "AIE1002",
+          "AIE1005",
+          "AIE2001",
+          "AIE2002",
+          "AIE2003",
+          "AIE2004",
+          "AIE3001",
+          "AIE3002",
+          "AIE3003",
+          "AIE4001"
+        ],
+        "courseCount": 11,
+        "credits": 34,
+        "rule": "모든 과목 이수"
+      },
+      "majorFoundation": {
+        "courses": [
+          "AIE2011",
+          "MTH1901",
+          "MTH1902"
+        ],
+        "credits": 9,
+        "rule": "모든 과목 이수",
+        "countsTowardMajor": true,
+        "note": "교과과정표 이수구분 \"전공기초\". 전공 65학점에 포함 (PM 확인 2026-09-24)"
+      },
+      "generalEducationRequired": {
+        "credits": 34,
+        "groups": [
+          {
+            "id": "focus",
+            "name": "중점교양",
+            "credits": 4,
+            "allOf": [
+              "GEB1112",
+              "GEB1114"
+            ]
+          },
+          {
+            "id": "basic",
+            "name": "기초교양",
+            "credits": 12,
+            "allOf": [
+              "GEB1117",
+              "GEB1126",
+              "GEB1143",
+              "GEB1151"
+            ],
+            "oneOf": [
+              {
+                "name": "의사소통 영어(영어 기초학력평가로 1과목 지정)",
+                "courses": [
+                  "GEB1107",
+                  "GEB1108",
+                  "GEB1109"
+                ],
+                "credits": 3
+              }
+            ]
+          },
+          {
+            "id": "core",
+            "name": "핵심교양",
+            "credits": 12,
+            "areas": [
+              {
+                "area": 1,
+                "name": "인간, 가치, 공존",
+                "credits": 3,
+                "rule": "영역 내 1과목 이상 (3학점)"
+              },
+              {
+                "area": 2,
+                "name": "역사, 사상, 문화",
+                "credits": 3,
+                "rule": "영역 내 1과목 이상 (3학점)"
+              },
+              {
+                "area": 4,
+                "name": "사회, 제도, 세계",
+                "credits": 3,
+                "rule": "영역 내 1과목 이상 (3학점)"
+              },
+              {
+                "area": 6,
+                "name": "수리, 정보, 기술",
+                "credits": 3,
+                "rule": "GED6009 지정",
+                "courses": [
+                  "GED6009"
+                ]
+              }
+            ],
+            "note": "같은 영역 2과목은 1과목만 영역 충족으로 인정(와이어프레임 문구, 학사 규정 미확인)"
+          },
+          {
+            "id": "swai",
+            "name": "SW·AI (일반교양 7영역)",
+            "credits": 3,
+            "oneOf": [
+              {
+                "name": "SW·AI기반 탄소중립 / 신기술(융합) 트랙 과목",
+                "courses": [
+                  "GEE7005",
+                  "GEE7006",
+                  "GEE7007",
+                  "GEE7008",
+                  "GEE7010",
+                  "GEE7011",
+                  "GEE7012",
+                  "GEE7013",
+                  "GEE7014",
+                  "GEE7015",
+                  "GEE7016",
+                  "GEE7018",
+                  "GEE7019"
+                ],
+                "credits": 3
+              }
+            ]
+          },
+          {
+            "id": "creative",
+            "name": "창의",
+            "credits": 3,
+            "oneOf": [
+              {
+                "name": "창의 영역 택1",
+                "courses": [
+                  "GEE4001",
+                  "GEE4004",
+                  "GEE4005",
+                  "GEE4006",
+                  "GEE4007",
+                  "GEE4009",
+                  "GEE4010",
+                  "GEE4012",
+                  "GEE4013",
+                  "GEE4014",
+                  "GEE4016",
+                  "GEE4018",
+                  "GEE4019",
+                  "GEE4020",
+                  "GEE4021",
+                  "GEE4025",
+                  "GEE4026",
+                  "GEE4027",
+                  "GEE4028",
+                  "GEE4029",
+                  "GEE4030",
+                  "GEE4031",
+                  "GEE4032",
+                  "GEE4033",
+                  "GEE4034"
+                ],
+                "credits": 3
+              }
+            ]
+          }
+        ]
+      },
+      "freeElective": {
+        "credits": 31,
+        "note": "130 - 전공 65(전공기초 포함) - 교양필수. 교과과정표에 일반선택 학점 명시는 없음"
+      },
+      "extraRequirements": [
+        {
+          "id": "microMajor",
+          "name": "'탄소중립' 마이크로전공 이수 (2023학년도 신입생부터)",
+          "rule": "핵심교양 6영역 GED6009 + 창의영역 택1 + 일반교양 7영역(탄소중립 마이크로전공 교과) 택1 = 9학점",
+          "coveredBy": [
+            "core.area6",
+            "creative",
+            "swai"
+          ],
+          "autoCheck": true
+        }
+      ],
+      "certifications": [
+        "englishGraduation"
+      ],
+      "notices": [
+        "재수강 과목과 F 학점은 반영하지 않음",
+        "최종 졸업 판정은 학과 졸업사정 기준"
+      ]
+    },
+    {
+      "departmentCode": "AIE",
+      "departmentName": "인공지능공학과",
+      "admissionYear": 2026,
+      "curriculumFile": "aie_2026_courses.csv",
+      "totalCredits": 130,
+      "majorCredits": {
+        "single": 65,
+        "double": 39,
+        "minor": 48,
+        "note": "단일(심화)전공 65 / 다중전공 39 / 부전공 48 (교과과정표 상단)"
+      },
+      "majorRequired": {
+        "courses": [
+          "AIE1001",
+          "AIE1002",
+          "AIE1005",
+          "AIE2001",
+          "AIE2002",
+          "AIE2003",
+          "AIE2004",
+          "AIE3001",
+          "AIE3002",
+          "AIE3003",
+          "AIE4001"
+        ],
+        "courseCount": 11,
+        "credits": 34,
+        "rule": "모든 과목 이수"
+      },
+      "majorFoundation": {
+        "courses": [
+          "AIE2011",
+          "MTH1901",
+          "MTH1902"
+        ],
+        "credits": 9,
+        "rule": "모든 과목 이수",
+        "countsTowardMajor": true,
+        "note": "교과과정표 이수구분 \"전공기초\". 전공 65학점에 포함 (PM 확인 2026-09-24)"
+      },
+      "generalEducationRequired": {
+        "credits": 34,
+        "groups": [
+          {
+            "id": "focus",
+            "name": "중점교양",
+            "credits": 4,
+            "allOf": [
+              "GEB1112",
+              "GEB1114"
+            ]
+          },
+          {
+            "id": "basic",
+            "name": "기초교양",
+            "credits": 12,
+            "allOf": [
+              "GEB1117",
+              "GEB1126",
+              "GEB1143",
+              "GEB1151"
+            ],
+            "oneOf": [
+              {
+                "name": "의사소통 영어(영어 기초학력평가로 1과목 지정)",
+                "courses": [
+                  "GEB1107",
+                  "GEB1108",
+                  "GEB1109"
+                ],
+                "credits": 3
+              }
+            ]
+          },
+          {
+            "id": "core",
+            "name": "핵심교양",
+            "credits": 12,
+            "areas": [
+              {
+                "area": 1,
+                "name": "인간, 가치, 공존",
+                "credits": 3,
+                "rule": "영역 내 1과목 이상 (3학점)"
+              },
+              {
+                "area": 2,
+                "name": "역사, 사상, 문화",
+                "credits": 3,
+                "rule": "영역 내 1과목 이상 (3학점)"
+              },
+              {
+                "area": 4,
+                "name": "사회, 제도, 세계",
+                "credits": 3,
+                "rule": "영역 내 1과목 이상 (3학점)"
+              },
+              {
+                "area": 6,
+                "name": "수리, 정보, 기술",
+                "credits": 3,
+                "rule": "GED6009 지정",
+                "courses": [
+                  "GED6009"
+                ]
+              }
+            ],
+            "note": "같은 영역 2과목은 1과목만 영역 충족으로 인정(와이어프레임 문구, 학사 규정 미확인)"
+          },
+          {
+            "id": "swai",
+            "name": "SW·AI (일반교양 7영역)",
+            "credits": 3,
+            "oneOf": [
+              {
+                "name": "SW·AI기반 탄소중립 / 신기술(융합) 트랙 과목",
+                "courses": [
+                  "GEE7005",
+                  "GEE7006",
+                  "GEE7007",
+                  "GEE7008",
+                  "GEE7010",
+                  "GEE7011",
+                  "GEE7012",
+                  "GEE7013",
+                  "GEE7014",
+                  "GEE7015",
+                  "GEE7016",
+                  "GEE7018",
+                  "GEE7019"
+                ],
+                "credits": 3
+              }
+            ]
+          },
+          {
+            "id": "creative",
+            "name": "창의",
+            "credits": 3,
+            "oneOf": [
+              {
+                "name": "창의 영역 택1",
+                "courses": [
+                  "GEE4001",
+                  "GEE4004",
+                  "GEE4005",
+                  "GEE4006",
+                  "GEE4007",
+                  "GEE4009",
+                  "GEE4010",
+                  "GEE4012",
+                  "GEE4013",
+                  "GEE4014",
+                  "GEE4016",
+                  "GEE4018",
+                  "GEE4019",
+                  "GEE4020",
+                  "GEE4021",
+                  "GEE4025",
+                  "GEE4026",
+                  "GEE4035",
+                  "GEE4036",
+                  "GEE4037",
+                  "GEE4038"
+                ],
+                "credits": 3
+              }
+            ]
+          }
+        ]
+      },
+      "freeElective": {
+        "credits": 31,
+        "note": "130 - 전공 65(전공기초 포함) - 교양필수. 교과과정표에 일반선택 학점 명시는 없음"
+      },
+      "extraRequirements": [
+        {
+          "id": "microMajor",
+          "name": "'탄소중립' 마이크로전공 이수 (2023학년도 신입생부터)",
+          "rule": "핵심교양 6영역 GED6009 + 창의영역 택1 + 일반교양 7영역(탄소중립 마이크로전공 교과) 택1 = 9학점",
+          "coveredBy": [
+            "core.area6",
+            "creative",
+            "swai"
+          ],
+          "autoCheck": true
+        }
+      ],
+      "certifications": [
+        "englishGraduation"
+      ],
+      "notices": [
+        "재수강 과목과 F 학점은 반영하지 않음",
+        "최종 졸업 판정은 학과 졸업사정 기준"
+      ]
+    },
+    {
+      "departmentCode": "CSE",
+      "departmentName": "컴퓨터공학과",
+      "admissionYear": 2025,
+      "curriculumFile": "cse_2025_courses.csv",
+      "totalCredits": 130,
+      "majorCredits": {
+        "single": 65,
+        "double": 39,
+        "minor": 48,
+        "note": "단일(심화)전공 65 / 다중전공 39 / 부전공 48 (교과과정표 상단)"
+      },
+      "majorRequired": {
+        "courses": [
+          "CSE1101",
+          "CSE1103",
+          "CSE1312",
+          "CSE2112",
+          "CSE4205"
+        ],
+        "courseCount": 5,
+        "credits": 16,
+        "rule": "모든 과목 이수"
+      },
+      "majorFoundation": {
+        "courses": [
+          "CSE2904",
+          "MTH1901",
+          "MTH1902"
+        ],
+        "credits": 9,
+        "rule": "모든 과목 이수",
+        "countsTowardMajor": true,
+        "note": "교과과정표 이수구분 \"전공기초\". 전공 65학점에 포함 (PM 확인 2026-09-24)"
+      },
+      "generalEducationRequired": {
+        "credits": 34,
+        "groups": [
+          {
+            "id": "focus",
+            "name": "중점교양",
+            "credits": 4,
+            "allOf": [
+              "GEB1112",
+              "GEB1114"
+            ]
+          },
+          {
+            "id": "basic",
+            "name": "기초교양",
+            "credits": 12,
+            "allOf": [
+              "GEB1117",
+              "GEB1126",
+              "GEB1143",
+              "GEB1151"
+            ],
+            "oneOf": [
+              {
+                "name": "의사소통 영어(영어 기초학력평가로 1과목 지정)",
+                "courses": [
+                  "GEB1107",
+                  "GEB1108",
+                  "GEB1109"
+                ],
+                "credits": 3
+              }
+            ]
+          },
+          {
+            "id": "core",
+            "name": "핵심교양",
+            "credits": 12,
+            "areas": [
+              {
+                "area": 1,
+                "name": "인간, 가치, 공존",
+                "credits": 3,
+                "rule": "영역 내 1과목 이상 (3학점)"
+              },
+              {
+                "area": 2,
+                "name": "역사, 사상, 문화",
+                "credits": 3,
+                "rule": "영역 내 1과목 이상 (3학점)"
+              },
+              {
+                "area": 4,
+                "name": "사회, 제도, 세계",
+                "credits": 3,
+                "rule": "영역 내 1과목 이상 (3학점)"
+              },
+              {
+                "area": 6,
+                "name": "수리, 정보, 기술",
+                "credits": 3,
+                "rule": "GED6009 지정",
+                "courses": [
+                  "GED6009"
+                ]
+              }
+            ],
+            "note": "같은 영역 2과목은 1과목만 영역 충족으로 인정(와이어프레임 문구, 학사 규정 미확인)"
+          },
+          {
+            "id": "swai",
+            "name": "SW·AI (일반교양 7영역)",
+            "credits": 3,
+            "oneOf": [
+              {
+                "name": "SW·AI기반 탄소중립 / 신기술(융합) 트랙 과목",
+                "courses": [
+                  "GEE7005",
+                  "GEE7006",
+                  "GEE7007",
+                  "GEE7008",
+                  "GEE7010",
+                  "GEE7011",
+                  "GEE7012",
+                  "GEE7013",
+                  "GEE7014",
+                  "GEE7015",
+                  "GEE7016",
+                  "GEE7018",
+                  "GEE7019"
+                ],
+                "credits": 3
+              }
+            ]
+          },
+          {
+            "id": "creative",
+            "name": "창의",
+            "credits": 3,
+            "oneOf": [
+              {
+                "name": "창의 영역 택1",
+                "courses": [
+                  "GEE4001",
+                  "GEE4004",
+                  "GEE4005",
+                  "GEE4006",
+                  "GEE4007",
+                  "GEE4009",
+                  "GEE4010",
+                  "GEE4012",
+                  "GEE4013",
+                  "GEE4014",
+                  "GEE4016",
+                  "GEE4018",
+                  "GEE4019",
+                  "GEE4020",
+                  "GEE4021",
+                  "GEE4025",
+                  "GEE4026",
+                  "GEE4027",
+                  "GEE4028",
+                  "GEE4029",
+                  "GEE4030",
+                  "GEE4031",
+                  "GEE4032",
+                  "GEE4033",
+                  "GEE4034"
+                ],
+                "credits": 3
+              }
+            ]
+          }
+        ]
+      },
+      "freeElective": {
+        "credits": 31,
+        "note": "130 - 전공 65(전공기초 포함) - 교양필수. 교과과정표에 일반선택 학점 명시는 없음"
+      },
+      "extraRequirements": [
+        {
+          "id": "microMajor",
+          "name": "SW중심대학 마이크로전공 이수",
+          "rule": "미래사회와 소프트웨어-IT계열(GEB1143) + 핵심교양 6영역 GED6009 + 일반교양 7영역(탄소중립/신기술(융합) 트랙) 택1",
+          "coveredBy": [
+            "basic",
+            "core.area6",
+            "swai"
+          ],
+          "autoCheck": true
+        },
+        {
+          "id": "gradExam",
+          "name": "졸업고사 응시(졸업학기)",
+          "autoCheck": false,
+          "alternatives": [
+            "전공성적 3.3 이상 성적표",
+            "정보처리기사",
+            "제1저자 논문 게재확인서 또는 논문 첫장·개요",
+            "TOPCIT 270점 이상",
+            "i-PAC 인증서 B등급 이상"
+          ]
+        },
+        {
+          "id": "topcit",
+          "name": "TOPCIT 응시 필수",
+          "rule": "3학년 이상 재학 중 총 2회 응시",
+          "autoCheck": false
+        }
+      ],
+      "certifications": [
+        "englishGraduation"
+      ],
+      "notices": [
+        "재수강 과목과 F 학점은 반영하지 않음",
+        "최종 졸업 판정은 학과 졸업사정 기준"
+      ]
+    },
+    {
+      "departmentCode": "CSE",
+      "departmentName": "컴퓨터공학과",
+      "admissionYear": 2026,
+      "curriculumFile": "cse_2026_courses.csv",
+      "totalCredits": 130,
+      "majorCredits": {
+        "single": 65,
+        "double": 39,
+        "minor": 48,
+        "note": "단일(심화)전공 65 / 다중전공 39 / 부전공 48 (교과과정표 상단)"
+      },
+      "majorRequired": {
+        "courses": [
+          "CSE1101",
+          "CSE1103",
+          "CSE1312",
+          "CSE2112",
+          "CSE4205"
+        ],
+        "courseCount": 5,
+        "credits": 16,
+        "rule": "모든 과목 이수"
+      },
+      "majorFoundation": {
+        "courses": [
+          "CSE2904",
+          "MTH1901",
+          "MTH1902"
+        ],
+        "credits": 9,
+        "rule": "모든 과목 이수",
+        "countsTowardMajor": true,
+        "note": "교과과정표 이수구분 \"전공기초\". 전공 65학점에 포함 (PM 확인 2026-09-24)"
+      },
+      "generalEducationRequired": {
+        "credits": 34,
+        "groups": [
+          {
+            "id": "focus",
+            "name": "중점교양",
+            "credits": 4,
+            "allOf": [
+              "GEB1112",
+              "GEB1114"
+            ]
+          },
+          {
+            "id": "basic",
+            "name": "기초교양",
+            "credits": 12,
+            "allOf": [
+              "GEB1117",
+              "GEB1126",
+              "GEB1143",
+              "GEB1151"
+            ],
+            "oneOf": [
+              {
+                "name": "의사소통 영어(영어 기초학력평가로 1과목 지정)",
+                "courses": [
+                  "GEB1107",
+                  "GEB1108",
+                  "GEB1109"
+                ],
+                "credits": 3
+              }
+            ]
+          },
+          {
+            "id": "core",
+            "name": "핵심교양",
+            "credits": 12,
+            "areas": [
+              {
+                "area": 1,
+                "name": "인간, 가치, 공존",
+                "credits": 3,
+                "rule": "영역 내 1과목 이상 (3학점)"
+              },
+              {
+                "area": 2,
+                "name": "역사, 사상, 문화",
+                "credits": 3,
+                "rule": "영역 내 1과목 이상 (3학점)"
+              },
+              {
+                "area": 4,
+                "name": "사회, 제도, 세계",
+                "credits": 3,
+                "rule": "영역 내 1과목 이상 (3학점)"
+              },
+              {
+                "area": 6,
+                "name": "수리, 정보, 기술",
+                "credits": 3,
+                "rule": "GED6009 지정",
+                "courses": [
+                  "GED6009"
+                ]
+              }
+            ],
+            "note": "같은 영역 2과목은 1과목만 영역 충족으로 인정(와이어프레임 문구, 학사 규정 미확인)"
+          },
+          {
+            "id": "swai",
+            "name": "SW·AI (일반교양 7영역)",
+            "credits": 3,
+            "oneOf": [
+              {
+                "name": "SW·AI기반 탄소중립 / 신기술(융합) 트랙 과목",
+                "courses": [
+                  "GEE7005",
+                  "GEE7006",
+                  "GEE7007",
+                  "GEE7008",
+                  "GEE7010",
+                  "GEE7011",
+                  "GEE7012",
+                  "GEE7013",
+                  "GEE7014",
+                  "GEE7015",
+                  "GEE7016",
+                  "GEE7018",
+                  "GEE7019"
+                ],
+                "credits": 3
+              }
+            ]
+          },
+          {
+            "id": "creative",
+            "name": "창의",
+            "credits": 3,
+            "oneOf": [
+              {
+                "name": "창의 영역 택1",
+                "courses": [
+                  "GEE4001",
+                  "GEE4004",
+                  "GEE4005",
+                  "GEE4006",
+                  "GEE4007",
+                  "GEE4009",
+                  "GEE4010",
+                  "GEE4012",
+                  "GEE4013",
+                  "GEE4014",
+                  "GEE4016",
+                  "GEE4018",
+                  "GEE4019",
+                  "GEE4020",
+                  "GEE4021",
+                  "GEE4025",
+                  "GEE4026",
+                  "GEE4035",
+                  "GEE4036",
+                  "GEE4037",
+                  "GEE4038"
+                ],
+                "credits": 3
+              }
+            ]
+          }
+        ]
+      },
+      "freeElective": {
+        "credits": 31,
+        "note": "130 - 전공 65(전공기초 포함) - 교양필수. 교과과정표에 일반선택 학점 명시는 없음"
+      },
+      "extraRequirements": [
+        {
+          "id": "microMajor",
+          "name": "SW중심대학 마이크로전공 이수",
+          "rule": "미래사회와 소프트웨어-IT계열(GEB1143) + 핵심교양 6영역 GED6009 + 일반교양 7영역(탄소중립/신기술(융합) 트랙) 택1",
+          "coveredBy": [
+            "basic",
+            "core.area6",
+            "swai"
+          ],
+          "autoCheck": true
+        },
+        {
+          "id": "gradExam",
+          "name": "졸업고사 응시(졸업학기)",
+          "autoCheck": false,
+          "alternatives": [
+            "전공성적 3.3 이상 성적표",
+            "정보처리기사",
+            "제1저자 논문 게재확인서 또는 논문 첫장·개요",
+            "TOPCIT 270점 이상",
+            "i-PAC 인증서 B등급 이상"
+          ]
+        },
+        {
+          "id": "topcit",
+          "name": "TOPCIT 응시 필수",
+          "rule": "3학년 이상 재학 중 총 2회 응시",
+          "autoCheck": false
+        }
+      ],
+      "certifications": [
+        "englishGraduation"
+      ],
+      "notices": [
+        "재수강 과목과 F 학점은 반영하지 않음",
+        "최종 졸업 판정은 학과 졸업사정 기준"
+      ]
+    }
+  ]
+}
