@@ -6,6 +6,11 @@ import java.util.List;
 public record DataIndex(String collectedAt, List<Entry> curricula, String generalEducation, String certification,
 		List<TimetableEntry> timetables) {
 
+	public DataIndex {
+		curricula = Immutables.list(curricula);
+		timetables = Immutables.list(timetables);
+	}
+
 	public record Entry(String id, String departmentCode, String department, int year, String file) {
 	}
 

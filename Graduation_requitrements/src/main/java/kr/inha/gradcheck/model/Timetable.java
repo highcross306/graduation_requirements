@@ -6,6 +6,10 @@ import java.util.List;
 /** 한 학기 강의시간표 (WEB-INF/data/timetable/{term}.json). */
 public record Timetable(String term, String note, List<Section> sections) {
 
+	public Timetable {
+		sections = Immutables.list(sections);
+	}
+
 	/**
 	 * 분반 하나.
 	 *
@@ -20,6 +24,11 @@ public record Timetable(String term, String note, List<Section> sections) {
 			BigDecimal credits, String type, List<Slot> slots, String timeCode, String timeAndRoom,
 			String professor, String grading, String note, boolean hasSyllabus,
 			GeneralEducationInfo generalEducation, List<String> listedIn) {
+
+		public Section {
+			slots = Immutables.list(slots);
+			listedIn = Immutables.list(listedIn);
+		}
 
 		/** "AIE1002-001" 형식의 분반 id. */
 		public String id() {
@@ -37,5 +46,9 @@ public record Timetable(String term, String note, List<Section> sections) {
 
 	/** @param creativeYears 창의 영역으로도 인정되는 교과과정 연도 (예: [2025, 2026]) */
 	public record GeneralEducationInfo(String category, Integer area, String areaName, List<Integer> creativeYears) {
+
+		public GeneralEducationInfo {
+			creativeYears = Immutables.list(creativeYears);
+		}
 	}
 }

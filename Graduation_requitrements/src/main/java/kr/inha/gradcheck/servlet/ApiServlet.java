@@ -9,6 +9,7 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,7 +21,8 @@ import kr.inha.gradcheck.model.Curriculum;
  * 조회 API 공통 처리: JSON 응답, 파라미터 검사, 오류 응답.
  * 하위 클래스는 {@link #get(HttpServletRequest)} 에서 응답 본문 객체만 돌려주면 된다.
  *
- * 오류 응답 (와이어프레임 예외 B): 400 BAD_REQUEST (파라미터 잘못됨), 404 NOT_FOUND (없는 교과과정·학기),
+ * 오류 응답 (와이어프레임 예외 B): 400 BAD_REQUEST (파라미터 잘못됨), 404 NOT_FOUND (없는 교과과정·학기·경로),
+ * 405 METHOD_NOT_ALLOWED (GET 외 메서드),
  * 503 DATA_UNAVAILABLE (데이터 로딩 실패), 500 INTERNAL_ERROR. 본문은 {"error": "...", "message": "..."}.
  */
 public abstract class ApiServlet extends HttpServlet {
@@ -29,6 +31,18 @@ public abstract class ApiServlet extends HttpServlet {
 	protected static final Gson GSON = new GsonBuilder().serializeNulls().create();
 
 	protected abstract Object get(HttpServletRequest req);
+
+	/** 조회 API 는 GET 만 받는다. 다른 메서드는 Tomcat 기본 HTML 대신 JSON 405 로 응답. */
+	@Override
+	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String method = req.getMethod();
+		if ("GET".equals(method) || "HEAD".equals(method) || "OPTIONS".equals(method)) {
+			super.service(req, resp);
+			return;
+		}
+		resp.setHeader("Allow", "GET, HEAD, OPTIONS");
+		writeError(resp, 405, "METHOD_NOT_ALLOWED", method + " 는 지원하지 않습니다. GET 으로 호출하세요.");
+	}
 
 	@Override
 	protected final void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -124,7 +138,8 @@ public abstract class ApiServlet extends HttpServlet {
 		resp.getWriter().write(GSON.toJson(body));
 	}
 
-	private static void writeError(HttpServletResponse resp, int status, String code, String message)
+	/** 오류 응답. ApiNotFoundServlet 도 같은 형식을 쓴다. */
+	static void writeError(HttpServletResponse resp, int status, String code, String message)
 			throws IOException {
 		writeJson(resp, status, obj("error", code, "message", message));
 	}

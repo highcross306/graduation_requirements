@@ -14,4 +14,8 @@ public record Curriculum(
 		int year,
 		List<Course> courses,
 		Requirements requirements) {
+
+	public Curriculum {
+		courses = Immutables.list(courses);
+	}
 }

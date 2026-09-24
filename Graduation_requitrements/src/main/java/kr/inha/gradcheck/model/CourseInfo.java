@@ -25,4 +25,8 @@ public record CourseInfo(
 		Course course,
 		List<GeneralEducationCourse> generalEducation,
 		boolean offeredThisTerm) {
+
+	public CourseInfo {
+		generalEducation = Immutables.list(generalEducation);
+	}
 }

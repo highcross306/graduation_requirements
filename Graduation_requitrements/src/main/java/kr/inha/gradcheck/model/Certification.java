@@ -8,6 +8,11 @@ public record Certification(EnglishGraduation englishGraduation) {
 
 	public record EnglishGraduation(String name, String rule, String scoreValidity, String howToVerify,
 			String ifNotMet, List<Criteria> criteria, List<Alternative> alternatives) {
+
+		public EnglishGraduation {
+			criteria = Immutables.list(criteria);
+			alternatives = Immutables.list(alternatives);
+		}
 	}
 
 	/**
@@ -18,6 +23,10 @@ public record Certification(EnglishGraduation englishGraduation) {
 	 */
 	public record Criteria(String departmentCode, String departmentName, String appliesTo, int admissionYearFrom,
 			Integer admissionYearTo, Map<String, String> scores) {
+
+		public Criteria {
+			scores = Immutables.map(scores);
+		}
 
 		public boolean appliesTo(String deptCode, int admissionYear) {
 			return departmentCode.equals(deptCode) && admissionYear >= admissionYearFrom

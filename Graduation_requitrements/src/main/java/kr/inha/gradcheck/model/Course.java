@@ -25,6 +25,11 @@ public record Course(
 		List<String> prerequisites,
 		String note) {
 
+	public Course {
+		recommendedTerms = Immutables.list(recommendedTerms);
+		prerequisites = Immutables.list(prerequisites);
+	}
+
 	public boolean isMajor() {
 		return "major".equals(category);
 	}
