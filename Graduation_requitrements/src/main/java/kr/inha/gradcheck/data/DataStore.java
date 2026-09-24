@@ -2,6 +2,7 @@ package kr.inha.gradcheck.data;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -51,11 +52,16 @@ public final class DataStore {
 	DataStore(DataIndex index, Map<String, Curriculum> curricula, List<GeneralEducationCourse> generalEducation,
 			Certification certification, Map<String, Timetable> timetables) {
 		this.index = index;
-		this.curricula = Map.copyOf(curricula);
+		// index.json 순서 유지 (Map.copyOf 는 서버를 켤 때마다 순서가 달라진다)
+		this.curricula = Collections.unmodifiableMap(new LinkedHashMap<>(curricula));
 		this.generalEducation = List.copyOf(generalEducation);
 		this.certification = certification;
-		this.timetables = new LinkedHashMap<>(timetables);
-		this.latestTimetable = timetables.values().stream().reduce((a, b) -> b).orElse(null);
+		// 학기 순서로 정렬: index.json 에 적힌 순서와 상관없이 마지막이 최신 학기
+		Map<String, Timetable> sorted = new LinkedHashMap<>();
+		timetables.keySet().stream().sorted(Comparator.comparingInt(DataStore::termOrder))
+				.forEach(term -> sorted.put(term, timetables.get(term)));
+		this.timetables = Collections.unmodifiableMap(sorted);
+		this.latestTimetable = sorted.values().stream().reduce((a, b) -> b).orElse(null);
 		this.latestOfferedCodes = latestTimetable == null ? Set.of()
 				: latestTimetable.sections().stream().map(Timetable.Section::code).collect(Collectors.toSet());
 	}
@@ -104,6 +110,7 @@ public final class DataStore {
 		return latestTimetable;
 	}
 
+	/** 시간표가 있는 학기, 오래된 순. */
 	public List<String> timetableTerms() {
 		return List.copyOf(timetables.keySet());
 	}
@@ -184,7 +191,8 @@ public final class DataStore {
 		if (scope == Scope.ALL || scope == Scope.OTHER) {
 			for (Curriculum other : curricula.values()) {
 				if (!other.departmentCode().equals(own.departmentCode())) {
-					other.courses().stream().filter(Course::isMajor)
+					// 두 학과 공통 과목(예: 일반수학 MTH1901)은 내 학과 과목이므로 타과에서 뺀다
+					other.courses().stream().filter(Course::isMajor).filter(co -> !ownCodes.contains(co.code()))
 							.forEach(co -> candidates.putIfAbsent(co.code(), co.name()));
 				}
 			}
@@ -247,6 +255,16 @@ public final class DataStore {
 			parts.add(g.area() == null ? g.category() : g.category() + " " + g.area() + "영역");
 		}
 		return "교양 · " + String.join(" · ", parts);
+	}
+
+	/** "2026-2" → 20262. 형식이 다르면 맨 앞으로. */
+	private static int termOrder(String term) {
+		String[] p = term.split("-");
+		try {
+			return Integer.parseInt(p[0]) * 10 + Integer.parseInt(p[1]);
+		} catch (RuntimeException e) {
+			return Integer.MIN_VALUE;
+		}
 	}
 
 	private static int sourceOrder(String source) {

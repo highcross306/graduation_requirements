@@ -23,17 +23,22 @@ public class RequirementsServlet extends ApiServlet {
 		Requirements r = c.requirements();
 		int major = r.majorCredits().single();
 		int majorRequired = r.majorRequired().credits();
-		int foundation = r.majorFoundation().credits();
-		int foundationInMajor = Boolean.TRUE.equals(r.majorFoundation().countsTowardMajor()) ? foundation : 0;
+		int general = r.generalEducationRequired().credits();
+		// 전공기초·일반선택은 학과에 따라 없을 수 있다 (DataLoader 가 필수 항목만 검사)
+		Requirements.CourseSet f = r.majorFoundation();
+		int foundation = f == null ? 0 : f.credits();
+		boolean foundationInMajor = f != null && Boolean.TRUE.equals(f.countsTowardMajor());
+		int freeElective = r.freeElective() != null ? r.freeElective().credits()
+				: r.totalCredits() - major - general - (foundationInMajor ? 0 : foundation);
 
 		return obj("curriculum", curriculumSummary(c),
 				"distribution", obj(
 						"total", r.totalCredits(),
-						"generalRequired", r.generalEducationRequired().credits(),
+						"generalRequired", general,
 						"majorRequired", majorRequired,
 						"majorFoundation", foundation,
-						"majorElective", major - majorRequired - foundationInMajor,
-						"freeElective", r.freeElective().credits(),
+						"majorElective", major - majorRequired - (foundationInMajor ? foundation : 0),
+						"freeElective", freeElective,
 						"major", major,
 						"basis", "단일(심화)전공 기준. 전공 " + major + "학점에 전공필수·전공기초·전공선택 포함"),
 				"requirements", r);
