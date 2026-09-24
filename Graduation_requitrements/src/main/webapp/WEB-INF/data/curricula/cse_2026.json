@@ -1,0 +1,1059 @@
+{
+  "id": "cse_2026",
+  "departmentCode": "CSE",
+  "department": "컴퓨터공학과",
+  "year": 2026,
+  "courses": [
+    {
+      "code": "GEB1117",
+      "name": "커리어 디자인 1",
+      "credits": 2,
+      "category": "general",
+      "type": "기초교양",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "1-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "GEB1126",
+      "name": "문제해결을 위한 글쓰기",
+      "credits": 3,
+      "category": "general",
+      "type": "기초교양",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "1-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "GEB1143",
+      "name": "미래사회와 소프트웨어-IT계열",
+      "credits": 3,
+      "category": "general",
+      "type": "기초교양",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "1-2",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "GEB1151",
+      "name": "커리어 디자인 2",
+      "credits": 1,
+      "category": "general",
+      "type": "기초교양",
+      "track": null,
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "3-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "GEB1107",
+      "name": "의사소통 영어",
+      "credits": 3,
+      "category": "general",
+      "type": "기초교양",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "1-2",
+      "prerequisites": [],
+      "note": "일반과목군(지정 1과목)"
+    },
+    {
+      "code": "GEB1108",
+      "name": "의사소통 영어: 중급",
+      "credits": 3,
+      "category": "general",
+      "type": "기초교양",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "1-2",
+      "prerequisites": [],
+      "note": "일반과목군(지정 1과목)"
+    },
+    {
+      "code": "GEB1109",
+      "name": "의사소통 영어: 고급",
+      "credits": 3,
+      "category": "general",
+      "type": "기초교양",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "1-2",
+      "prerequisites": [],
+      "note": "일반과목군(지정 1과목)"
+    },
+    {
+      "code": "GEB1112",
+      "name": "크로스오버 1 : 인간의 탐색",
+      "credits": 2,
+      "category": "general",
+      "type": "중점교양",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "1-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "GEB1114",
+      "name": "크로스오버 3 : 사회의 탐색",
+      "credits": 2,
+      "category": "general",
+      "type": "중점교양",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        1,
+        2
+      ],
+      "recommendedSemester": "1-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "CSE1101",
+      "name": "객체지향프로그래밍 1",
+      "credits": 3,
+      "category": "major",
+      "type": "전공필수",
+      "track": "공통",
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "1-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "CSE1103",
+      "name": "객체지향프로그래밍 2",
+      "credits": 3,
+      "category": "major",
+      "type": "전공필수",
+      "track": "공통",
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "1-2",
+      "prerequisites": [
+        "CSE1101"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE1312",
+      "name": "이산구조",
+      "credits": 3,
+      "category": "major",
+      "type": "전공필수",
+      "track": "공통",
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "1-2",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "CSE2112",
+      "name": "자료구조",
+      "credits": 4,
+      "category": "major",
+      "type": "전공필수",
+      "track": "공통",
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "2-1",
+      "prerequisites": [
+        "CSE1103",
+        "MTH1902"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE4205",
+      "name": "컴퓨터공학 종합설계",
+      "credits": 3,
+      "category": "major",
+      "type": "전공필수",
+      "track": "공통",
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        1,
+        2
+      ],
+      "recommendedSemester": "4-1",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE1122",
+      "name": "컴퓨터공학입문 프로그래밍",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "공통",
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "1-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "CSE2105",
+      "name": "컴퓨터기반선형대수",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "공통",
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "2-2",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE2113",
+      "name": "오픈소스SW개론",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "공통",
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "2-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "CSE2211",
+      "name": "논리회로",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "공통",
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "2-2",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "CSE3104",
+      "name": "컴퓨터응용확률",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "공통",
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "3-2",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE3111",
+      "name": "실전산학프로젝트 1",
+      "credits": 1,
+      "category": "major",
+      "type": "전공선택",
+      "track": "공통",
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        1,
+        2
+      ],
+      "recommendedSemester": "3-1",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE3112",
+      "name": "실전산학프로젝트 2",
+      "credits": 1,
+      "category": "major",
+      "type": "전공선택",
+      "track": "공통",
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        1,
+        2
+      ],
+      "recommendedSemester": "3-1",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE3203",
+      "name": "컴퓨터구조론",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "공통",
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "3-1",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE3212",
+      "name": "컴퓨터 네트워크",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "공통",
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        1,
+        2
+      ],
+      "recommendedSemester": "3-1",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE3308",
+      "name": "시스템분석",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "공통",
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "3-1",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE3309",
+      "name": "문제해결기법",
+      "credits": 4,
+      "category": "major",
+      "type": "전공선택",
+      "track": "공통",
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "3-2",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE4201",
+      "name": "소프트웨어공학",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "공통",
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "4-2",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE4204",
+      "name": "알고리즘",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "공통",
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "3-1",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE4232",
+      "name": "프로그래밍언어 이론",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "공통",
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "4-1",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE3207",
+      "name": "데이터베이스",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "데이터사이언스",
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "3-1",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE4111",
+      "name": "클라우드컴퓨팅",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "데이터사이언스",
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "4-1",
+      "prerequisites": [
+        "CSE2112",
+        "CSE3212"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE4206",
+      "name": "데이터마이닝",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "데이터사이언스",
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "4-2",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE4302",
+      "name": "인공지능",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "데이터사이언스",
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "2-2",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE4315",
+      "name": "기계학습",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "데이터사이언스",
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "4-1",
+      "prerequisites": [
+        "CSE2112",
+        "CSE2105"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE4317",
+      "name": "딥러닝",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "데이터사이언스",
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "4-2",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE3206",
+      "name": "오퍼레이팅시스템",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "시스템SW",
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "3-1",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE3209",
+      "name": "시스템 프로그래밍",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "시스템SW",
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "2-2",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE3213",
+      "name": "디지털시스템설계",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "시스템SW",
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "3-2",
+      "prerequisites": [
+        "CSE2112",
+        "CSE3203"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE3214",
+      "name": "병렬 프로그래밍",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "시스템SW",
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "3-2",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE3304",
+      "name": "임베디드소프트웨어",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "시스템SW",
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "3-2",
+      "prerequisites": [
+        "CSE2112",
+        "CSE3206"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE4312",
+      "name": "컴파일러",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "시스템SW",
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "4-1",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE4313",
+      "name": "컴퓨터보안",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "시스템SW",
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "4-1",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE2104",
+      "name": "인터넷 프로그래밍",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "응용SW",
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "2-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "CSE2107",
+      "name": "자바기반응용프로그래밍",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "응용SW",
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "2-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "CSE3204",
+      "name": "컴퓨터그래픽스",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "응용SW",
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "3-2",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE3210",
+      "name": "오픈소스응용프로그래밍",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "응용SW",
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "2-2",
+      "prerequisites": [
+        "CSE2112",
+        "CSE2113"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE4303",
+      "name": "게임프로그래밍",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "응용SW",
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "4-1",
+      "prerequisites": [
+        "CSE2112",
+        "CSE3204"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE4307",
+      "name": "멀티미디어 컴퓨팅",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "응용SW",
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "4-1",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE4316",
+      "name": "IoT와 엣지컴퓨팅 개론",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": "응용SW",
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "4-2",
+      "prerequisites": [
+        "CSE2112"
+      ],
+      "note": null
+    },
+    {
+      "code": "CSE2904",
+      "name": "통계학",
+      "credits": 3,
+      "category": "major",
+      "type": "전공기초",
+      "track": "전공기초",
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "2-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "MTH1901",
+      "name": "일반수학 1",
+      "credits": 3,
+      "category": "major",
+      "type": "전공기초",
+      "track": "전공기초",
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "1-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "MTH1902",
+      "name": "일반수학 2",
+      "credits": 3,
+      "category": "major",
+      "type": "전공기초",
+      "track": "전공기초",
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "1-2",
+      "prerequisites": [
+        "MTH1901"
+      ],
+      "note": null
+    }
+  ],
+  "requirements": {
+    "departmentCode": "CSE",
+    "departmentName": "컴퓨터공학과",
+    "admissionYear": 2026,
+    "totalCredits": 130,
+    "majorCredits": {
+      "single": 65,
+      "double": 39,
+      "minor": 48,
+      "note": "단일(심화)전공 65 / 다중전공 39 / 부전공 48 (교과과정표 상단)"
+    },
+    "majorRequired": {
+      "courses": [
+        "CSE1101",
+        "CSE1103",
+        "CSE1312",
+        "CSE2112",
+        "CSE4205"
+      ],
+      "courseCount": 5,
+      "credits": 16,
+      "rule": "모든 과목 이수"
+    },
+    "majorFoundation": {
+      "courses": [
+        "CSE2904",
+        "MTH1901",
+        "MTH1902"
+      ],
+      "credits": 9,
+      "rule": "모든 과목 이수",
+      "countsTowardMajor": true,
+      "note": "교과과정표 이수구분 \"전공기초\". 전공 65학점에 포함 (PM 확인 2026-09-24)"
+    },
+    "generalEducationRequired": {
+      "credits": 34,
+      "groups": [
+        {
+          "id": "focus",
+          "name": "중점교양",
+          "credits": 4,
+          "allOf": [
+            "GEB1112",
+            "GEB1114"
+          ]
+        },
+        {
+          "id": "basic",
+          "name": "기초교양",
+          "credits": 12,
+          "allOf": [
+            "GEB1117",
+            "GEB1126",
+            "GEB1143",
+            "GEB1151"
+          ],
+          "oneOf": [
+            {
+              "name": "의사소통 영어(영어 기초학력평가로 1과목 지정)",
+              "courses": [
+                "GEB1107",
+                "GEB1108",
+                "GEB1109"
+              ],
+              "credits": 3
+            }
+          ]
+        },
+        {
+          "id": "core",
+          "name": "핵심교양",
+          "credits": 12,
+          "areas": [
+            {
+              "area": 1,
+              "name": "인간, 가치, 공존",
+              "credits": 3,
+              "rule": "영역 내 1과목 이상 (3학점)"
+            },
+            {
+              "area": 2,
+              "name": "역사, 사상, 문화",
+              "credits": 3,
+              "rule": "영역 내 1과목 이상 (3학점)"
+            },
+            {
+              "area": 4,
+              "name": "사회, 제도, 세계",
+              "credits": 3,
+              "rule": "영역 내 1과목 이상 (3학점)"
+            },
+            {
+              "area": 6,
+              "name": "수리, 정보, 기술",
+              "credits": 3,
+              "rule": "GED6009 지정",
+              "courses": [
+                "GED6009"
+              ]
+            }
+          ],
+          "note": "같은 영역 2과목은 1과목만 영역 충족으로 인정(와이어프레임 문구, 학사 규정 미확인)"
+        },
+        {
+          "id": "swai",
+          "name": "SW·AI (일반교양 7영역)",
+          "credits": 3,
+          "oneOf": [
+            {
+              "name": "SW·AI기반 탄소중립 / 신기술(융합) 트랙 과목",
+              "courses": [
+                "GEE7005",
+                "GEE7006",
+                "GEE7007",
+                "GEE7008",
+                "GEE7010",
+                "GEE7011",
+                "GEE7012",
+                "GEE7013",
+                "GEE7014",
+                "GEE7015",
+                "GEE7016",
+                "GEE7018",
+                "GEE7019"
+              ],
+              "credits": 3
+            }
+          ]
+        },
+        {
+          "id": "creative",
+          "name": "창의",
+          "credits": 3,
+          "oneOf": [
+            {
+              "name": "창의 영역 택1",
+              "courses": [
+                "GEE4001",
+                "GEE4004",
+                "GEE4005",
+                "GEE4006",
+                "GEE4007",
+                "GEE4009",
+                "GEE4010",
+                "GEE4012",
+                "GEE4013",
+                "GEE4014",
+                "GEE4016",
+                "GEE4018",
+                "GEE4019",
+                "GEE4020",
+                "GEE4021",
+                "GEE4025",
+                "GEE4026",
+                "GEE4035",
+                "GEE4036",
+                "GEE4037",
+                "GEE4038"
+              ],
+              "credits": 3
+            }
+          ]
+        }
+      ]
+    },
+    "freeElective": {
+      "credits": 31,
+      "note": "130 - 전공 65(전공기초 포함) - 교양필수. 교과과정표에 일반선택 학점 명시는 없음"
+    },
+    "extraRequirements": [
+      {
+        "id": "microMajor",
+        "name": "SW중심대학 마이크로전공 이수",
+        "rule": "미래사회와 소프트웨어-IT계열(GEB1143) + 핵심교양 6영역 GED6009 + 일반교양 7영역(탄소중립/신기술(융합) 트랙) 택1",
+        "coveredBy": [
+          "basic",
+          "core.area6",
+          "swai"
+        ],
+        "autoCheck": true
+      },
+      {
+        "id": "gradExam",
+        "name": "졸업고사 응시(졸업학기)",
+        "autoCheck": false,
+        "alternatives": [
+          "전공성적 3.3 이상 성적표",
+          "정보처리기사",
+          "제1저자 논문 게재확인서 또는 논문 첫장·개요",
+          "TOPCIT 270점 이상",
+          "i-PAC 인증서 B등급 이상"
+        ]
+      },
+      {
+        "id": "topcit",
+        "name": "TOPCIT 응시 필수",
+        "rule": "3학년 이상 재학 중 총 2회 응시",
+        "autoCheck": false
+      }
+    ],
+    "certifications": [
+      "englishGraduation"
+    ],
+    "notices": [
+      "재수강 과목과 F 학점은 반영하지 않음",
+      "최종 졸업 판정은 학과 졸업사정 기준"
+    ]
+  }
+}

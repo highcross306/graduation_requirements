@@ -1,0 +1,962 @@
+{
+  "id": "ai_2025",
+  "departmentCode": "AIE",
+  "department": "인공지능공학과",
+  "year": 2025,
+  "courses": [
+    {
+      "code": "GEB1107",
+      "name": "의사소통 영어",
+      "credits": 3,
+      "category": "general",
+      "type": "기초교양",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "1-2",
+      "prerequisites": [],
+      "note": "일반과목군(지정 1과목)"
+    },
+    {
+      "code": "GEB1108",
+      "name": "의사소통 영어: 중급",
+      "credits": 3,
+      "category": "general",
+      "type": "기초교양",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "1-2",
+      "prerequisites": [],
+      "note": "일반과목군(지정 1과목)"
+    },
+    {
+      "code": "GEB1109",
+      "name": "의사소통 영어: 고급",
+      "credits": 3,
+      "category": "general",
+      "type": "기초교양",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "1-2",
+      "prerequisites": [],
+      "note": "일반과목군(지정 1과목)"
+    },
+    {
+      "code": "GEB1117",
+      "name": "커리어 디자인 1",
+      "credits": 2,
+      "category": "general",
+      "type": "기초교양",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "1-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "GEB1126",
+      "name": "문제해결을 위한 글쓰기",
+      "credits": 3,
+      "category": "general",
+      "type": "기초교양",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "1-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "GEB1143",
+      "name": "미래사회와 소프트웨어-IT계열",
+      "credits": 3,
+      "category": "general",
+      "type": "기초교양",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "1-2",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "GEB1151",
+      "name": "커리어 디자인 2",
+      "credits": 1,
+      "category": "general",
+      "type": "기초교양",
+      "track": null,
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "3-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "GEB1112",
+      "name": "크로스오버 1 : 인간의 탐색",
+      "credits": 2,
+      "category": "general",
+      "type": "중점교양",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "1-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "GEB1114",
+      "name": "크로스오버 3 : 사회의 탐색",
+      "credits": 2,
+      "category": "general",
+      "type": "중점교양",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        1,
+        2
+      ],
+      "recommendedSemester": "1-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "GED6009",
+      "name": "인공지능과 소프트웨어를 활용한 탄소중립",
+      "credits": 3,
+      "category": "general",
+      "type": "교양선택",
+      "track": null,
+      "recommendedYear": null,
+      "recommendedTerms": [
+        1,
+        2
+      ],
+      "recommendedSemester": null,
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "AIE1001",
+      "name": "객체지향프로그래밍 1",
+      "credits": 3,
+      "category": "major",
+      "type": "전공필수",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "1-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "AIE1002",
+      "name": "객체지향프로그래밍 2",
+      "credits": 3,
+      "category": "major",
+      "type": "전공필수",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "1-2",
+      "prerequisites": [
+        "AIE1001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE1005",
+      "name": "이산구조",
+      "credits": 3,
+      "category": "major",
+      "type": "전공필수",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "1-2",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "AIE2001",
+      "name": "자료구조",
+      "credits": 4,
+      "category": "major",
+      "type": "전공필수",
+      "track": null,
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "2-1",
+      "prerequisites": [
+        "AIE1002"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE2002",
+      "name": "인공지능프로그래밍",
+      "credits": 3,
+      "category": "major",
+      "type": "전공필수",
+      "track": null,
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "2-2",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE2003",
+      "name": "선형대수",
+      "credits": 3,
+      "category": "major",
+      "type": "전공필수",
+      "track": null,
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "2-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "AIE2004",
+      "name": "인공지능확률론",
+      "credits": 3,
+      "category": "major",
+      "type": "전공필수",
+      "track": null,
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "2-2",
+      "prerequisites": [
+        "AIE2001",
+        "AIE2011"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE3001",
+      "name": "기계학습",
+      "credits": 3,
+      "category": "major",
+      "type": "전공필수",
+      "track": null,
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "3-1",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE3002",
+      "name": "알고리즘",
+      "credits": 3,
+      "category": "major",
+      "type": "전공필수",
+      "track": null,
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "3-1",
+      "prerequisites": [
+        "AIE2001",
+        "AIE2002"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE3003",
+      "name": "인공신경망",
+      "credits": 3,
+      "category": "major",
+      "type": "전공필수",
+      "track": null,
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "3-2",
+      "prerequisites": [
+        "AIE2001",
+        "AIE3001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE4001",
+      "name": "인공지능종합설계",
+      "credits": 3,
+      "category": "major",
+      "type": "전공필수",
+      "track": null,
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        1,
+        2
+      ],
+      "recommendedSemester": "4-1",
+      "prerequisites": [
+        "AIE2001",
+        "AIE3002"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE1004",
+      "name": "인공지능창의설계",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "1-2",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "AIE1006",
+      "name": "인공지능 입문",
+      "credits": 2,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "1-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "AIE2005",
+      "name": "파이썬기반응용프로그래밍",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "2-1",
+      "prerequisites": [
+        "AIE1002"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE2008",
+      "name": "디지털 신호처리",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "2-2",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE2009",
+      "name": "오픈소스SW개론",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "2-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "AIE2010",
+      "name": "논리회로",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "2-2",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "AIE3004",
+      "name": "자연어처리",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "3-2",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE3006",
+      "name": "운영체제론",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "3-1",
+      "prerequisites": [
+        "AIE2001",
+        "AIE2008"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE3007",
+      "name": "데이터베이스",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "3-1",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE3008",
+      "name": "컴퓨터 비전",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "3-2",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE3009",
+      "name": "컴퓨터 네트워크",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "3-2",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE3010",
+      "name": "컴퓨터구조론",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "3-1",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE3011",
+      "name": "문제해결기법",
+      "credits": 4,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "3-2",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE3012",
+      "name": "인공지능",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "3-1",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE3013",
+      "name": "병렬컴퓨팅",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 3,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "3-2",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE4003",
+      "name": "강화학습",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "4-1",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE4004",
+      "name": "인공지능보안",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "4-1",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE4005",
+      "name": "데이터마이닝",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "4-1",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE4006",
+      "name": "인간-컴퓨터상호작용",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "4-2",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE4008",
+      "name": "심화전공탐색",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "4-2",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE4009",
+      "name": "멀티미디어 컴퓨팅",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "4-1",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE4010",
+      "name": "바이오 인공지능",
+      "credits": 3,
+      "category": "major",
+      "type": "전공선택",
+      "track": null,
+      "recommendedYear": 4,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "4-1",
+      "prerequisites": [
+        "AIE2001"
+      ],
+      "note": null
+    },
+    {
+      "code": "AIE2011",
+      "name": "통계학",
+      "credits": 3,
+      "category": "major",
+      "type": "전공기초",
+      "track": null,
+      "recommendedYear": 2,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "2-1",
+      "prerequisites": [
+        "MTH1902"
+      ],
+      "note": null
+    },
+    {
+      "code": "MTH1901",
+      "name": "일반수학 1",
+      "credits": 3,
+      "category": "major",
+      "type": "전공기초",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        1
+      ],
+      "recommendedSemester": "1-1",
+      "prerequisites": [],
+      "note": null
+    },
+    {
+      "code": "MTH1902",
+      "name": "일반수학 2",
+      "credits": 3,
+      "category": "major",
+      "type": "전공기초",
+      "track": null,
+      "recommendedYear": 1,
+      "recommendedTerms": [
+        2
+      ],
+      "recommendedSemester": "1-2",
+      "prerequisites": [
+        "MTH1901"
+      ],
+      "note": null
+    }
+  ],
+  "requirements": {
+    "departmentCode": "AIE",
+    "departmentName": "인공지능공학과",
+    "admissionYear": 2025,
+    "totalCredits": 130,
+    "majorCredits": {
+      "single": 65,
+      "double": 39,
+      "minor": 48,
+      "note": "단일(심화)전공 65 / 다중전공 39 / 부전공 48 (교과과정표 상단)"
+    },
+    "majorRequired": {
+      "courses": [
+        "AIE1001",
+        "AIE1002",
+        "AIE1005",
+        "AIE2001",
+        "AIE2002",
+        "AIE2003",
+        "AIE2004",
+        "AIE3001",
+        "AIE3002",
+        "AIE3003",
+        "AIE4001"
+      ],
+      "courseCount": 11,
+      "credits": 34,
+      "rule": "모든 과목 이수"
+    },
+    "majorFoundation": {
+      "courses": [
+        "AIE2011",
+        "MTH1901",
+        "MTH1902"
+      ],
+      "credits": 9,
+      "rule": "모든 과목 이수",
+      "countsTowardMajor": true,
+      "note": "교과과정표 이수구분 \"전공기초\". 전공 65학점에 포함 (PM 확인 2026-09-24)"
+    },
+    "generalEducationRequired": {
+      "credits": 34,
+      "groups": [
+        {
+          "id": "focus",
+          "name": "중점교양",
+          "credits": 4,
+          "allOf": [
+            "GEB1112",
+            "GEB1114"
+          ]
+        },
+        {
+          "id": "basic",
+          "name": "기초교양",
+          "credits": 12,
+          "allOf": [
+            "GEB1117",
+            "GEB1126",
+            "GEB1143",
+            "GEB1151"
+          ],
+          "oneOf": [
+            {
+              "name": "의사소통 영어(영어 기초학력평가로 1과목 지정)",
+              "courses": [
+                "GEB1107",
+                "GEB1108",
+                "GEB1109"
+              ],
+              "credits": 3
+            }
+          ]
+        },
+        {
+          "id": "core",
+          "name": "핵심교양",
+          "credits": 12,
+          "areas": [
+            {
+              "area": 1,
+              "name": "인간, 가치, 공존",
+              "credits": 3,
+              "rule": "영역 내 1과목 이상 (3학점)"
+            },
+            {
+              "area": 2,
+              "name": "역사, 사상, 문화",
+              "credits": 3,
+              "rule": "영역 내 1과목 이상 (3학점)"
+            },
+            {
+              "area": 4,
+              "name": "사회, 제도, 세계",
+              "credits": 3,
+              "rule": "영역 내 1과목 이상 (3학점)"
+            },
+            {
+              "area": 6,
+              "name": "수리, 정보, 기술",
+              "credits": 3,
+              "rule": "GED6009 지정",
+              "courses": [
+                "GED6009"
+              ]
+            }
+          ],
+          "note": "같은 영역 2과목은 1과목만 영역 충족으로 인정(와이어프레임 문구, 학사 규정 미확인)"
+        },
+        {
+          "id": "swai",
+          "name": "SW·AI (일반교양 7영역)",
+          "credits": 3,
+          "oneOf": [
+            {
+              "name": "SW·AI기반 탄소중립 / 신기술(융합) 트랙 과목",
+              "courses": [
+                "GEE7005",
+                "GEE7006",
+                "GEE7007",
+                "GEE7008",
+                "GEE7010",
+                "GEE7011",
+                "GEE7012",
+                "GEE7013",
+                "GEE7014",
+                "GEE7015",
+                "GEE7016",
+                "GEE7018",
+                "GEE7019"
+              ],
+              "credits": 3
+            }
+          ]
+        },
+        {
+          "id": "creative",
+          "name": "창의",
+          "credits": 3,
+          "oneOf": [
+            {
+              "name": "창의 영역 택1",
+              "courses": [
+                "GEE4001",
+                "GEE4004",
+                "GEE4005",
+                "GEE4006",
+                "GEE4007",
+                "GEE4009",
+                "GEE4010",
+                "GEE4012",
+                "GEE4013",
+                "GEE4014",
+                "GEE4016",
+                "GEE4018",
+                "GEE4019",
+                "GEE4020",
+                "GEE4021",
+                "GEE4025",
+                "GEE4026",
+                "GEE4027",
+                "GEE4028",
+                "GEE4029",
+                "GEE4030",
+                "GEE4031",
+                "GEE4032",
+                "GEE4033",
+                "GEE4034"
+              ],
+              "credits": 3
+            }
+          ]
+        }
+      ]
+    },
+    "freeElective": {
+      "credits": 31,
+      "note": "130 - 전공 65(전공기초 포함) - 교양필수. 교과과정표에 일반선택 학점 명시는 없음"
+    },
+    "extraRequirements": [
+      {
+        "id": "microMajor",
+        "name": "'탄소중립' 마이크로전공 이수 (2023학년도 신입생부터)",
+        "rule": "핵심교양 6영역 GED6009 + 창의영역 택1 + 일반교양 7영역(탄소중립 마이크로전공 교과) 택1 = 9학점",
+        "coveredBy": [
+          "core.area6",
+          "creative",
+          "swai"
+        ],
+        "autoCheck": true
+      }
+    ],
+    "certifications": [
+      "englishGraduation"
+    ],
+    "notices": [
+      "재수강 과목과 F 학점은 반영하지 않음",
+      "최종 졸업 판정은 학과 졸업사정 기준"
+    ]
+  }
+}

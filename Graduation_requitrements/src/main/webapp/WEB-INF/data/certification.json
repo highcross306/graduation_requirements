@@ -1,0 +1,81 @@
+{
+  "_meta": {
+    "description": "인하졸업인증(영어졸업인증) 기준 — 졸업요건 앱 대시보드 '졸업인증' 카드용",
+    "collectedAt": "2026-09-24",
+    "source": "https://www.inha.ac.kr/kr/1051/subview.do (학사 > 졸업 > 인하졸업인증, 소프트웨어융합대학 표)",
+    "note": "학과가 AI융합대학으로 개편됐지만 학교 페이지 표는 아직 '소프트웨어융합대학' 이름으로 되어 있음. 전과생은 전과한 학과 기준 적용."
+  },
+  "englishGraduation": {
+    "name": "영어졸업인증",
+    "rule": "아래 시험 중 하나라도 기준 점수 이상이면 충족",
+    "scoreValidity": "응시일로부터 2년 이내 성적만 인정 (성적표 유효기간 기준)",
+    "howToVerify": "인하포털 > 성적 > '졸업인증 취득여부 확인' 또는 소속 학과",
+    "ifNotMet": "졸업 요건을 다 채워도 인증 취득 전까지 수료 처리, 취득한 학기의 졸업일자로 학위 수여",
+    "criteria": [
+      {
+        "departmentCode": "AIE",
+        "departmentName": "인공지능공학과",
+        "appliesTo": "2021학년도 이후 신입생",
+        "admissionYearFrom": 2021,
+        "scores": {
+          "TOEIC": 700,
+          "TOEIC Speaking": 130,
+          "TOEFL PBT": 540,
+          "TOEFL CBT": 207,
+          "TOEFL iBT": 76,
+          "NEW TEPS": 327,
+          "OPIc": "IM1",
+          "IELTS": 6.0
+        }
+      },
+      {
+        "departmentCode": "CSE",
+        "departmentName": "컴퓨터공학과",
+        "appliesTo": "2016학년도 이후 신입생 및 2018학년도 이후 3학년 편입생",
+        "admissionYearFrom": 2016,
+        "scores": {
+          "TOEIC": 700,
+          "TOEIC Speaking": 130,
+          "TOEFL PBT": 540,
+          "TOEFL CBT": 207,
+          "TOEFL iBT": 76,
+          "NEW TEPS": 327,
+          "OPIc": "IM1",
+          "IELTS": 6.0
+        }
+      },
+      {
+        "departmentCode": "CSE",
+        "departmentName": "컴퓨터공학과",
+        "appliesTo": "2007학년도 이후 신입생 및 2009학년도 이후 3학년 편입생",
+        "admissionYearFrom": 2007,
+        "admissionYearTo": 2015,
+        "scores": {
+          "TOEIC": 650,
+          "TOEIC Speaking": 120,
+          "TOEFL PBT": 522,
+          "TOEFL CBT": 192,
+          "TOEFL iBT": 69,
+          "NEW TEPS": 291,
+          "OPIc": "IM1",
+          "IELTS": 5.5
+        }
+      }
+    ],
+    "alternatives": [
+      {
+        "id": "course",
+        "name": "졸업인증실용영어 (GEE3001) 이수",
+        "rule": "수강 후 Pass 이상이면 영어졸업인증 취득 인정 (학점·성적도 부여)",
+        "eligibility": "전 학년 수강 가능. 수강신청 전날까지 소속 학과에 공인영어 성적표 제출 필수(미제출 시 수강신청 불가)"
+      },
+      {
+        "id": "specialLecture",
+        "name": "졸업인증 토익특강",
+        "rule": "특강 이수 후 시험 합격 시 영어졸업인증 취득 (학점·성적과 무관)",
+        "eligibility": "해당 학기 졸업예정자(수료자 포함)만. 신청 전 학과에 기준 미달 공인영어 성적표 또는 교내 모의토익 성적표 제출",
+        "schedule": "방학 중, 교무처 주관, 무료"
+      }
+    ]
+  }
+}

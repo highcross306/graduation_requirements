@@ -24,7 +24,7 @@
 
 - **CSV (UTF-8 BOM, 엑셀로 바로 열림)**: 행 단위 목록 데이터(과목, 교양, 시간표). 팀원이 확인·수정하기 쉬움.
 - **JSON**: 규칙 데이터(졸업요건, 졸업인증). 과목은 학수번호로만 참조하고, 과목 정보는 CSV에서 찾는다.
-  → 나중에 `WEB-INF/data`로 옮길 때 CSV→JSON 변환만 하면 된다. (아직 프로젝트에는 넣지 않음)
+  → `sources/build_webapp_data.py`로 `WEB-INF/data` JSON(영문 키)을 만든다. 구조는 README 참고.
 
 ### `graduation_requirements.json` 구조 (programs[] 한 개)
 ```

@@ -1,0 +1,41 @@
+{
+  "collectedAt": "2026-09-24",
+  "curricula": [
+    {
+      "id": "ai_2025",
+      "departmentCode": "AIE",
+      "department": "인공지능공학과",
+      "year": 2025,
+      "file": "curricula/ai_2025.json"
+    },
+    {
+      "id": "ai_2026",
+      "departmentCode": "AIE",
+      "department": "인공지능공학과",
+      "year": 2026,
+      "file": "curricula/ai_2026.json"
+    },
+    {
+      "id": "cse_2025",
+      "departmentCode": "CSE",
+      "department": "컴퓨터공학과",
+      "year": 2025,
+      "file": "curricula/cse_2025.json"
+    },
+    {
+      "id": "cse_2026",
+      "departmentCode": "CSE",
+      "department": "컴퓨터공학과",
+      "year": 2026,
+      "file": "curricula/cse_2026.json"
+    }
+  ],
+  "generalEducation": "general_education.json",
+  "certification": "certification.json",
+  "timetables": [
+    {
+      "term": "2026-2",
+      "file": "timetable/2026-2.json"
+    }
+  ]
+}
