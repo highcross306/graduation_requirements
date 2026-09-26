@@ -23,6 +23,16 @@
   --orb-cert: #8A5CF6;      /* 졸업인증 — 보라 계열 */
   --orb-off: #C7CDDA;       /* 아직 못 모은 여의주 — 회색 계열 */
 
+  /* 이수구분 범주 색 (구슬 색과 별개) — 전공필수와 전공선택을 확실히 구분한다 */
+  --cat-major-req: var(--primary-dark);  /* 전공필수 — 진한 파랑 */
+  --cat-major-elec: var(--orb-major);    /* 전공선택 — 하늘 */
+
+  /* 교양 추천(05·06) 포인트 — 교양필수 여의주 청록에서 파생 */
+  --gen-text: color-mix(in srgb, var(--orb-general) 82%, #000);  /* 청록 글씨 */
+  --gen-bg: color-mix(in srgb, var(--orb-general) 9%, #fff);     /* 연청록 배경 */
+  --gen-bg-strong: color-mix(in srgb, var(--orb-general) 20%, #fff); /* 연청록 원·칩 */
+  --wish-bg: color-mix(in srgb, var(--wish) 40%, #fff);          /* 연노랑 칩 */
+
   --notice-bg: #FFF7E0;     /* 안내 박스 배경 (탭2 노란 안내) */
   --notice-border: #F3DFA0;
   --notice-text: #8A6A1F;
@@ -601,7 +611,7 @@ img, svg {
 }
 
 .progress-bar--wish .progress-bar__fill { background: var(--wish); }
-.progress-bar--major .progress-bar__fill { background: var(--orb-major); }
+.progress-bar--major .progress-bar__fill { background: var(--cat-major-req); }
 .progress-bar--general .progress-bar__fill { background: var(--orb-general); }
 .progress-bar--total .progress-bar__fill { background: var(--orb-total); }
 .progress-bar--cert .progress-bar__fill { background: var(--orb-cert); }
@@ -957,6 +967,10 @@ img, svg {
   text-align: right;
 }
 
+.req-card__pct--major {
+  color: var(--cat-major-req);
+}
+
 .req-card__body {
   display: flex;
   flex-direction: column;
@@ -1046,8 +1060,9 @@ img, svg {
 }
 
 .chip--grade {
-  background: var(--bg);
-  color: var(--text-sub);
+  background: #fff;
+  color: var(--cat-major-req);
+  border: 1px solid var(--cat-major-req);
 }
 
 .area-row {
@@ -1245,9 +1260,13 @@ img, svg {
   border-bottom-color: var(--primary);
 }
 
+/* 모달 = 세로 flex: 헤더·탭(고정) → 본문(남은 공간, 자체 스크롤) → 하단(고정)
+   하단 칩 영역이 커져도 본문(과목 표)은 최소 240px을 유지한다.
+   (창 높이가 아주 낮아 240px이면 담기 버튼이 잘리는 경우에만 그보다 줄어든다) */
 .modal-body {
   flex: 1;
-  overflow-y: auto;
+  min-height: clamp(120px, calc(90vh - 380px), 240px);
+  overflow: auto;
   padding: 24px 32px;
 }
 
@@ -1329,6 +1348,11 @@ img, svg {
   background: #fff;
   border-left-color: var(--primary);
   color: var(--primary);
+}
+
+.modal-sidebar__item--major-req.modal-sidebar__item--active {
+  border-left-color: var(--cat-major-req);
+  color: var(--cat-major-req);
 }
 
 .modal-sidebar__count {
@@ -1415,6 +1439,12 @@ img, svg {
 .modal-chip--major.modal-chip--active {
   background: var(--primary);
   border-color: var(--primary);
+  color: #fff;
+}
+
+.modal-chip--major-req.modal-chip--active {
+  background: var(--cat-major-req);
+  border-color: var(--cat-major-req);
   color: #fff;
 }
 
@@ -1599,10 +1629,15 @@ img, svg {
 
 .modal-footer__row1 {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
+  flex-direction: column;
+  gap: 8px;
   margin-bottom: 12px;
+}
+
+.modal-footer__summary-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .modal-footer__summary {
@@ -1612,11 +1647,37 @@ img, svg {
   flex-shrink: 0;
 }
 
+.modal-footer__toggle {
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.modal-footer__toggle[hidden] {
+  display: none;
+}
+
+.modal-footer__summary-line .modal-footer__clear {
+  margin-left: auto;
+}
+
+/* 기본은 칩 2줄 정도, 펼치면 약 220px까지 — 넘치면 칩 영역 안에서만 스크롤 */
 .modal-footer__chips {
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
   gap: 8px;
-  flex: 1;
+  max-height: 88px;
+  overflow-y: auto;
+}
+
+/* 낮은 화면에서는 헤더·탭·합계 줄(약 290px)과 본문 최소 240px을 뺀 만큼만 펼쳐서
+   담기 버튼이 모달 밖으로 잘리지 않게 한다. */
+.modal-footer__chips--expanded {
+  max-height: clamp(88px, calc(90vh - 530px), 220px);
 }
 
 .modal-chip-item {
@@ -1973,7 +2034,7 @@ img, svg {
 
 .chip--major {
   background: var(--primary-light);
-  color: var(--primary);
+  color: var(--cat-major-req);
 }
 
 .chip--elective {
@@ -2014,7 +2075,7 @@ img, svg {
 .next-dot--bad { background: var(--bad); }
 .next-dot--sub { background: var(--text-sub); }
 .next-dot--gen { background: var(--orb-general); }
-.next-dot--major { background: var(--primary); }
+.next-dot--major { background: var(--cat-major-req); }
 
 .next-row__orb {
   width: 22px;
@@ -2143,4 +2204,547 @@ img, svg {
   margin: 0;
   font-size: 13px;
   color: var(--text);
+}
+
+/* ============================================================
+   05 교양 취향 테스트 (#survey)
+   ============================================================ */
+
+.survey-grid {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.survey-eyebrow {
+  margin: 0 0 2px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gen-text);
+}
+
+.survey-orb {
+  width: 64px;
+  height: 64px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.survey-orb__icon {
+  width: 30px;
+  height: 30px;
+}
+
+/* -- 왼쪽 패널 -- */
+
+.survey-nav {
+  padding: 28px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.survey-nav__head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.survey-nav__title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.survey-nav__desc {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.6;
+}
+
+.survey-nav__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.survey-nav__item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: none;
+  background: transparent;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--text);
+  text-align: left;
+}
+
+.survey-nav__item:disabled {
+  cursor: default;
+}
+
+.survey-nav__mark {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.survey-nav__item--current {
+  background: var(--gen-bg);
+  color: var(--gen-text);
+  font-weight: 700;
+}
+
+.survey-nav__item--current .survey-nav__mark {
+  background: var(--orb-general);
+  color: #fff;
+}
+
+.survey-nav__item--done:hover {
+  background: var(--bg);
+}
+
+.survey-nav__item--done .survey-nav__mark {
+  background: var(--gen-bg-strong);
+  color: var(--gen-text);
+}
+
+.survey-nav__item--todo {
+  color: var(--text-sub);
+}
+
+.survey-nav__item--todo .survey-nav__mark {
+  background: var(--line);
+  color: var(--text-sub);
+}
+
+.survey-team-notice {
+  background: var(--bad-bg);
+  color: var(--bad);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* -- 오른쪽 질문 카드 -- */
+
+.survey-question {
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
+}
+
+.survey-progress {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.survey-progress__q {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--gen-text);
+}
+
+.survey-progress__count {
+  font-size: 13px;
+  color: var(--text-sub);
+  flex-shrink: 0;
+}
+
+.survey-question__title {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.survey-question__sub {
+  margin: 0 0 24px;
+  font-size: 14px;
+  color: var(--text-sub);
+}
+
+.survey-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.survey-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin: 1px; /* 선택 시 2px 테두리로 바뀌어도 레이아웃이 흔들리지 않게 */
+  font-size: 15px;
+  color: var(--text);
+  text-align: left;
+}
+
+.survey-option:hover {
+  border-color: var(--orb-general);
+}
+
+.survey-option__mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 900;
+  color: #fff;
+}
+
+.survey-option--multi .survey-option__mark {
+  border-radius: 6px; /* Q5는 복수 선택이라 네모 체크박스 */
+}
+
+.survey-option--selected {
+  background: var(--gen-bg);
+  border: 2px solid var(--orb-general);
+  margin: 0;
+  font-weight: 700;
+}
+
+.survey-option--selected .survey-option__mark {
+  background: var(--orb-general);
+  border-color: var(--orb-general);
+}
+
+.survey-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.survey-actions__prev {
+  padding: 14px 28px;
+}
+
+.survey-actions__prev:disabled {
+  color: var(--orb-off);
+  border-color: var(--line);
+  cursor: not-allowed;
+}
+
+.survey-actions__next {
+  flex: 1;
+  padding: 14px;
+  font-size: 15px;
+}
+
+/* -- 추천할 영역이 없을 때 -- */
+
+.survey-done-card {
+  padding: 56px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  text-align: center;
+}
+
+.survey-done-card__title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 900;
+}
+/* ============================================================
+   06 취향 저격 교양 결과 (#electives)
+   ============================================================ */
+
+.electives-conds {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.electives-conds__label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-sub);
+  margin-right: 4px;
+}
+
+.cond-chip {
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.cond-chip--info { background: var(--primary-light); color: var(--primary); }
+.cond-chip--bad { background: var(--bad-bg); color: var(--bad); }
+.cond-chip--gen { background: var(--gen-bg-strong); color: var(--gen-text); }
+.cond-chip--wish { background: var(--wish-bg); color: var(--notice-text-strong); }
+
+.electives-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 24px;
+  align-items: start;
+}
+
+/* -- 왼쪽 추천 표 -- */
+
+.electives-results {
+  padding: 12px 12px 18px;
+  overflow-x: auto;
+}
+
+.elective-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.elective-table th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-sub);
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.elective-table td {
+  padding: 16px 14px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+.elective-row--top td {
+  background: var(--gen-bg);
+}
+
+.elective-row--top td:first-child { border-radius: 12px 0 0 12px; }
+.elective-row--top td:last-child { border-radius: 0 12px 12px 0; }
+
+.elective-rank {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 900;
+  background: var(--gen-bg-strong);
+  color: var(--gen-text);
+}
+
+.elective-rank--top {
+  background: var(--gen-text);
+  color: #fff;
+}
+
+.elective-row__name {
+  margin: 0;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.elective-row__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.reason-tag {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--text-sub);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.elective-row__credit {
+  white-space: nowrap;
+  color: var(--text-sub);
+}
+
+.kind-chip {
+  display: inline-block;
+  white-space: nowrap;
+  background: var(--gen-bg-strong);
+  color: var(--gen-text);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.match {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.match__bar {
+  width: 56px;
+  flex: none;
+  height: 6px;
+}
+
+.match__pct {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.pick-btn {
+  background: var(--orb-general);
+  color: #fff;
+  border: 1px solid var(--orb-general);
+  padding: 7px 16px;
+  font-size: 13px;
+}
+
+.pick-btn:hover {
+  background: var(--gen-text);
+  border-color: var(--gen-text);
+}
+
+.pick-btn--picked,
+.pick-btn--picked:hover {
+  background: #fff;
+  color: var(--gen-text);
+  border-color: var(--orb-general);
+}
+
+.electives-note {
+  margin: 14px 14px 0;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+.electives-empty {
+  padding: 56px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  text-align: center;
+}
+
+.electives-empty__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+/* -- 오른쪽 "담은 교양" 패널 -- */
+
+.picks-panel {
+  padding: 26px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.picks-panel__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.picks-panel__orb {
+  width: 48px;
+  height: 48px;
+}
+
+.picks-panel__orb .survey-orb__icon {
+  width: 22px;
+  height: 22px;
+}
+
+.picks-panel__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.picks-panel__sum {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--text-sub);
+}
+
+.picks-panel__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.picks-panel__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+}
+
+.picks-panel__credit {
+  flex-shrink: 0;
+  color: var(--text-sub);
+}
+
+.picks-panel__empty {
+  margin: 0;
+  padding: 18px 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-sub);
+}
+
+.picks-panel__warn {
+  margin: 0;
+  font-size: 12px;
+  color: var(--notice-text);
+}
+
+.picks-panel__info {
+  background: var(--gen-bg);
+  color: var(--gen-text);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 13px;
+}
+
+.picks-panel__btn {
+  width: 100%;
+  padding: 13px;
+  font-size: 15px;
 }

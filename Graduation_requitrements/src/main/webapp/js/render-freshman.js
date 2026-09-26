@@ -51,7 +51,7 @@ function renderFreshman() {
           '<div class="freshman-choice-box">' +
             '<p class="freshman-choice-box__title">골라 듣는 교양 (선택)</p>' +
             '<p class="freshman-choice-box__desc">핵심교양(1·2·4영역)과 창의 영역은 과목을 골라 들어요. 첫 학기에 1과목 정도 넣고 싶다면 취향에 맞는 과목을 추천해 드려요.</p>' +
-            '<button type="button" class="btn btn--outline freshman-choice-box__btn" data-action="toast-wip">교양 추천 받기</button>' +
+            '<button type="button" class="btn btn--outline freshman-choice-box__btn" data-action="go-survey">교양 추천 받기</button>' +
           '</div>' +
         '</div>' +
       '</div>' +
@@ -85,5 +85,8 @@ function bindFreshmanEvents() {
   var el = document.getElementById('view-freshman');
   Array.prototype.forEach.call(el.querySelectorAll('[data-action="toast-wip"]'), function (btn) {
     btn.addEventListener('click', function () { showToast('준비 중이에요'); });
+  });
+  Array.prototype.forEach.call(el.querySelectorAll('[data-action="go-survey"]'), function (btn) {
+    btn.addEventListener('click', goSurvey);
   });
 }

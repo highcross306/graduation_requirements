@@ -24,7 +24,8 @@ var _modalState = {
   catalogSearchQuery: '',
   searchQuery: '',
   searchScope: 'all',
-  draft: []
+  draft: [],
+  chipsExpanded: false  // 하단 "새로 담은 과목" 칩 영역 펼침 여부
 };
 
 var _modalEscHandler = function (e) {
@@ -43,6 +44,7 @@ function openCourseModal(initialCategory) {
   _modalState.selectedCoreZone = 'all';
   _modalState.searchQuery = '';
   _modalState.searchScope = 'all';
+  _modalState.chipsExpanded = false;
 
   if (initialCategory === 'GEN_REQ') {
     _modalState.selectedCategory = 'GEN_REQ';
@@ -180,7 +182,7 @@ function buildSidebarHTML() {
       ? majorEarned + '/' + req.majorRequiredCount
       : electiveEarnedCredit(category) + '학점';
     return (
-      '<button type="button" class="modal-sidebar__item' + (active ? ' modal-sidebar__item--active' : '') + '" data-sidebar-category="' + category + '">' +
+      '<button type="button" class="modal-sidebar__item' + (category === 'MAJOR_REQ' ? ' modal-sidebar__item--major-req' : '') + (active ? ' modal-sidebar__item--active' : '') + '" data-sidebar-category="' + category + '">' +
         '<span class="modal-sidebar__dot" style="background:' + dotColor + '"></span>' +
         '<span>' + label + '</span>' +
         '<span class="modal-sidebar__count">' + count + '</span>' +
@@ -193,8 +195,8 @@ function buildSidebarHTML() {
       '<div class="modal-sidebar__group-label"><span class="modal-sidebar__dot" style="background:var(--orb-general)"></span>교양필수 <span class="modal-sidebar__group-total">' + req.credits.general + '학점</span></div>' +
       areaRowsHTML +
     '</div>' +
-    topItem('MAJOR_REQ', '전공필수', 'var(--primary)') +
-    topItem('MAJOR_ELEC', '전공선택', 'var(--orb-major)') +
+    topItem('MAJOR_REQ', '전공필수', 'var(--cat-major-req)') +
+    topItem('MAJOR_ELEC', '전공선택', 'var(--cat-major-elec)') +
     topItem('GEN_ELEC', '교양선택', 'var(--orb-general)') +
     topItem('FREE_ELEC', '일반선택·타과', 'var(--orb-off)') +
     '<p class="modal-sidebar__hint">목록에 없는 과목은 위의 "직접 검색해서 추가"에서 찾을 수 있어요.</p>'
@@ -235,7 +237,7 @@ function getCatalogFilterChips() {
   }
   if (_modalState.selectedCategory === 'MAJOR_REQ' || _modalState.selectedCategory === 'MAJOR_ELEC') {
     return {
-      colorClass: 'modal-chip--major',
+      colorClass: _modalState.selectedCategory === 'MAJOR_REQ' ? 'modal-chip--major-req' : 'modal-chip--major',
       activeValue: _modalState.selectedGrade,
       items: [
         { value: 'all', label: '전체' },
@@ -639,16 +641,40 @@ function renderModalFooter() {
 
   footerEl.innerHTML =
     '<div class="modal-footer__row1">' +
-      '<p class="modal-footer__summary">새로 담은 과목 <strong>' + addCount + '개</strong> · <strong>' + addCredit + '학점</strong></p>' +
-      '<div class="modal-footer__chips">' + chipsHTML + '</div>' +
-      (isEmpty ? '' : '<button type="button" class="modal-footer__clear" id="modal-clear-btn">전체 삭제</button>') +
+      '<div class="modal-footer__summary-line">' +
+        '<p class="modal-footer__summary">새로 담은 과목 <strong>' + addCount + '개</strong> · <strong>' + addCredit + '학점</strong></p>' +
+        '<button type="button" class="modal-footer__toggle" id="modal-chips-toggle" hidden>' +
+          (_modalState.chipsExpanded ? '접기 ▴' : '펼치기 ▾') +
+        '</button>' +
+        (isEmpty ? '' : '<button type="button" class="modal-footer__clear" id="modal-clear-btn">전체 삭제</button>') +
+      '</div>' +
+      '<div class="modal-footer__chips' + (_modalState.chipsExpanded ? ' modal-footer__chips--expanded' : '') + '" id="modal-footer-chips">' + chipsHTML + '</div>' +
     '</div>' +
     '<div class="modal-footer__row2">' +
       '<p class="modal-footer__calc">담으면 총 <strong>' + totalCount + '과목 · ' + totalCredit + '학점</strong>으로 계산돼요</p>' +
       '<button type="button" class="btn btn--primary modal-footer__confirm' + (isEmpty ? ' is-disabled' : '') + '" id="modal-confirm-btn">' + confirmLabel + '</button>' +
     '</div>';
 
+  updateChipsToggleVisibility();
   bindModalFooterEvents();
+}
+
+/* 칩 영역이 기본 높이(약 2줄)를 넘칠 때만 "펼치기/접기" 토글을 보여준다.
+   펼친 상태에서는 접을 수 있어야 하므로, 접었을 때 넘치는지를 기준으로 판단한다. */
+function updateChipsToggleVisibility() {
+  var chipsEl = document.getElementById('modal-footer-chips');
+  var toggleEl = document.getElementById('modal-chips-toggle');
+  if (!chipsEl || !toggleEl) return;
+
+  chipsEl.classList.remove('modal-footer__chips--expanded');
+  var overflows = chipsEl.scrollHeight > chipsEl.clientHeight + 1;
+  if (_modalState.chipsExpanded && overflows) {
+    chipsEl.classList.add('modal-footer__chips--expanded');
+  }
+  if (!overflows) _modalState.chipsExpanded = false;
+
+  toggleEl.hidden = !overflows;
+  toggleEl.textContent = _modalState.chipsExpanded ? '접기 ▴' : '펼치기 ▾';
 }
 
 function creditOf(code) {
@@ -705,6 +731,14 @@ function bindModalFooterEvents() {
       renderModalFooter();
     });
   });
+
+  var toggleBtn = document.getElementById('modal-chips-toggle');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function () {
+      _modalState.chipsExpanded = !_modalState.chipsExpanded;
+      updateChipsToggleVisibility();
+    });
+  }
 
   var clearBtn = document.getElementById('modal-clear-btn');
   if (clearBtn) {

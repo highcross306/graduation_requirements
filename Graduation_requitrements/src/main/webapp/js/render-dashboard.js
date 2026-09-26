@@ -43,12 +43,12 @@ function buildDashboardHeaderHTML(isEmpty, isComplete, result) {
   if (isEmpty) {
     buttonsHTML =
       '<button type="button" class="btn btn--primary" data-action="open-modal">+ 과목 입력하기</button>' +
-      '<button type="button" class="btn btn--outline" data-action="toast-wip">교양 추천 받기</button>';
+      '<button type="button" class="btn btn--outline" data-action="go-survey">교양 추천 받기</button>';
   } else {
     buttonsHTML =
       '<button type="button" class="btn btn--outline" data-action="go-guide">? 이수구분 가이드</button>' +
       '<button type="button" class="btn btn--primary" data-action="open-modal">+ 과목 입력하기</button>' +
-      '<button type="button" class="btn btn--outline" data-action="toast-wip">교양 추천 받기</button>';
+      '<button type="button" class="btn btn--outline" data-action="go-survey">교양 추천 받기</button>';
   }
 
   var titleBlock;
@@ -178,7 +178,7 @@ function buildReqCardProgressHTML(orbKey, pct) {
   return (
     '<div class="req-card__progress">' +
       '<div class="progress-bar progress-bar--' + orbKey + '"><div class="progress-bar__fill" style="width:' + pct + '%"></div></div>' +
-      '<span class="req-card__pct">' + pct + '%</span>' +
+      '<span class="req-card__pct req-card__pct--' + orbKey + '">' + pct + '%</span>' +
     '</div>'
   );
 }
@@ -250,7 +250,7 @@ function buildGeneralCardHTML(card) {
       buildReqCardProgressHTML('general', pct) +
       '<div class="req-card__body">' +
         areasHTML +
-        '<a href="#" class="req-card__link" data-action="toast-wip">취향 맞는 교양으로 채우기 →</a>' +
+        '<a href="#survey" class="req-card__link" data-action="go-survey">취향 맞는 교양으로 채우기 →</a>' +
       '</div>' +
     '</div>'
   );
@@ -346,6 +346,13 @@ function bindDashboardEvents() {
     btn.addEventListener('click', function (e) {
       e.preventDefault();
       showToast('준비 중이에요');
+    });
+  });
+
+  Array.prototype.forEach.call(root.querySelectorAll('[data-action="go-survey"]'), function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      goSurvey();
     });
   });
 

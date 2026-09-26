@@ -29,7 +29,7 @@ function buildGuideCards() {
       note: null, hasAreaTable: true
     },
     {
-      key: 'major', color: 'var(--primary)', abbr: '전필', title: '전공필수',
+      key: 'major', color: 'var(--cat-major-req)', abbr: '전필', title: '전공필수',
       subtitle: '정해진 과목을 모두 들어야 해요 (전공기초 포함)',
       bullets: [req.majorRequiredCount + '과목을 모두 이수해야 충족돼요', '하나라도 빠지면 미충족으로 남아요'],
       deptValue: req.majorRequiredCount + '과목 · ' + req.credits.major + '학점',
@@ -44,7 +44,7 @@ function buildGuideCards() {
       note: null, hasAreaTable: false
     },
     {
-      key: 'majorElective', color: 'var(--orb-major)', abbr: '전선', title: '전공선택',
+      key: 'majorElective', color: 'var(--cat-major-elec)', abbr: '전선', title: '전공선택',
       subtitle: '전공 중 골라서 학점만 채우면 돼요',
       bullets: ['전공 과목 중 자유롭게 선택해요', '학점만 채우면 어떤 전공 과목이든 OK'],
       deptValue: req.credits.majorElective + '학점 (단일전공 기준)',

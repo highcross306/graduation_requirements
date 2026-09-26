@@ -8,16 +8,16 @@ function getCreditSegments() {
   var credits = getActiveRequirements().credits;
   return [
     { key: 'general', label: '교양필수', abbr: '교필', credit: credits.general, color: 'var(--orb-general)' },
-    { key: 'major', label: '전공필수', abbr: '전필', credit: credits.major, color: 'var(--primary)' },
-    { key: 'majorElective', label: '전공선택', abbr: '전선', credit: credits.majorElective, color: 'var(--orb-major)' },
+    { key: 'major', label: '전공필수', abbr: '전필', credit: credits.major, color: 'var(--cat-major-req)' },
+    { key: 'majorElective', label: '전공선택', abbr: '전선', credit: credits.majorElective, color: 'var(--cat-major-elec)' },
     { key: 'freeElective', label: '일반선택', abbr: '일선', credit: credits.freeElective, color: 'var(--orb-off)' }
   ];
 }
 
 var CATEGORY_MINI_INFO = [
   { abbr: '교필', label: '교양필수', desc: '영역 5개를 각각 채워야 해요', color: 'var(--orb-general)' },
-  { abbr: '전필', label: '전공필수', desc: '정해진 과목, 하나라도 빠지면 미충족', color: 'var(--primary)' },
-  { abbr: '전선', label: '전공선택', desc: '전공 중 골라서 학점만 채우면 OK', color: 'var(--orb-major)' },
+  { abbr: '전필', label: '전공필수', desc: '정해진 과목, 하나라도 빠지면 미충족', color: 'var(--cat-major-req)' },
+  { abbr: '전선', label: '전공선택', desc: '전공 중 골라서 학점만 채우면 OK', color: 'var(--cat-major-elec)' },
   { abbr: '일선', label: '일반선택', desc: '타과·교양 등 무엇이든 OK', color: 'var(--orb-off)' },
   { abbr: '교선', label: '교양선택', desc: '필수 외 교양 · 인정 기준 확인 필요', color: 'var(--text-sub)' }
 ];

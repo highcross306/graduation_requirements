@@ -23,7 +23,7 @@
       <a href="#dashboard" class="menu-item" data-action="navigate" data-route="dashboard">대시보드</a>
       <a href="#" class="menu-item" data-action="open-modal">과목 입력</a>
       <a href="#next" class="menu-item" data-action="go-next-or-freshman" data-route="next">다음 학기 추천</a>
-      <a href="#" class="menu-item" data-action="toast-wip">교양 추천</a>
+      <a href="#survey" class="menu-item" data-action="go-survey-or-electives" data-route="survey">교양 추천</a>
       <a href="#" class="menu-item" data-action="toast-wip">시간표</a>
     </nav>
 
@@ -43,6 +43,8 @@
   <section id="view-guide" class="view" hidden></section>
   <section id="view-next" class="view" hidden></section>
   <section id="view-freshman" class="view" hidden></section>
+  <section id="view-survey" class="view" hidden></section>
+  <section id="view-electives" class="view" hidden></section>
 </main>
 
 <div id="modal-root"></div>
@@ -73,6 +75,8 @@
 <script src="js/curriculum-data.js"></script>
 <script src="js/mock.js"></script>
 <script src="js/api.js"></script>
+<script src="js/elective-attrs.js"></script>
+<script src="js/elective.js"></script>
 <script src="js/render-common.js"></script>
 <script src="js/render-start.js"></script>
 <script src="js/render-dashboard.js"></script>
@@ -80,6 +84,8 @@
 <script src="js/render-guide.js"></script>
 <script src="js/render-next.js"></script>
 <script src="js/render-freshman.js"></script>
+<script src="js/render-survey.js"></script>
+<script src="js/render-electives.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

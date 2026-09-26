@@ -8,10 +8,13 @@ var state = {
   year: null,      // 입학연도 (예: 2025)
   courses: [],      // 이수한 과목 [{ code, category }]
   certs: [],        // 취득한 졸업인증 id 목록
-  result: null      // 판정 결과 (apiEvaluate 응답)
+  result: null,     // 판정 결과 (apiEvaluate 응답)
+  survey: null,     // 교양 취향 설문 답 { q1, q2, q3, q4, q5: [...], q6 }
+  surveyDone: false, // 이번 세션에 설문을 끝까지 마쳤는지 (헤더 "교양 추천" 이동 기준)
+  electivePicks: [] // 06 결과에서 담은 교양 학수번호 목록 (대시보드 반영 전)
 };
 
-var ROUTES = ['start', 'dashboard', 'guide', 'next', 'freshman'];
+var ROUTES = ['start', 'dashboard', 'guide', 'next', 'freshman', 'survey', 'electives'];
 
 function getCurrentRoute() {
   var hash = location.hash.replace('#', '');
@@ -20,6 +23,11 @@ function getCurrentRoute() {
 
 function navigate(route) {
   location.hash = '#' + route;
+}
+
+/* 교양 추천 진입 버튼(대시보드·새내기·다음 학기 추천)에서 공통으로 사용 */
+function goSurvey() {
+  navigate('survey');
 }
 
 /* ------------------------------------------------------------
@@ -44,7 +52,9 @@ function renderHeader() {
       (deptLabel ? deptLabel + ' · ' : '') + (state.year ? state.year + '학번' : '');
 
     Array.prototype.forEach.call(menuEl.querySelectorAll('.menu-item'), function (item) {
-      var active = item.dataset.route === route || (item.dataset.route === 'next' && route === 'freshman');
+      var active = item.dataset.route === route ||
+        (item.dataset.route === 'next' && route === 'freshman') ||
+        (item.dataset.route === 'survey' && route === 'electives');
       item.classList.toggle('menu-item--active', active);
     });
   }
@@ -60,6 +70,8 @@ function bindHeaderEvents() {
         navigate(item.dataset.route);
       } else if (action === 'go-next-or-freshman') {
         navigate(state.courses.length === 0 ? 'freshman' : 'next');
+      } else if (action === 'go-survey-or-electives') {
+        navigate(state.surveyDone ? 'electives' : 'survey');
       } else if (action === 'open-modal') {
         if (typeof openCourseModal === 'function') openCourseModal();
       } else if (action === 'toast-wip') {
@@ -143,6 +155,12 @@ function renderRoute() {
   } else if (route === 'freshman') {
     if (typeof renderFreshman === 'function') renderFreshman();
     else placeholderView('view-freshman', '새내기 첫 학기 (다음 단계에서 구현)');
+  } else if (route === 'survey') {
+    if (typeof renderSurvey === 'function') renderSurvey();
+    else placeholderView('view-survey', '05 교양 취향 테스트 (다음 단계에서 구현)');
+  } else if (route === 'electives') {
+    if (typeof renderElectives === 'function') renderElectives();
+    else placeholderView('view-electives', '06 취향 저격 교양 결과 (다음 단계에서 구현)');
   }
 }
 
