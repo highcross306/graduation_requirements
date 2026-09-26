@@ -1,6 +1,6 @@
 # 졸업요건 앱 API (BE A: 데이터·조회)
 
-모든 API는 `GET`, 응답은 오류를 포함해 항상 `application/json; charset=UTF-8`. FE에서는 상대 경로(`api/...`)로 호출한다.
+조회 API는 `GET`, 학생이 담은 과목을 보내는 판정·추천 API(아래 [BE B](#be-b-판정추천-api))는 `POST`. 응답은 오류를 포함해 항상 `application/json; charset=UTF-8`. FE에서는 상대 경로(`api/...`)로 호출한다.
 데이터는 서버 시작 때 `WEB-INF/data`에서 한 번 읽는다 (`DataLoader`). 데이터를 바꾸면 서버를 다시 시작해야 한다.
 
 ## 오류 응답 (와이어프레임 예외 B)
@@ -13,7 +13,7 @@
 |---|---|---|
 | 400 | `BAD_REQUEST` | 필수 파라미터 없음, 값 형식·범위 오류 |
 | 404 | `NOT_FOUND` | 없는 교과과정 id, 학기, 분반, `/api/` 아래 없는 경로 (예: 끝에 `/`) |
-| 405 | `METHOD_NOT_ALLOWED` | 조회 API 를 GET 외 메서드로 호출 |
+| 405 | `METHOD_NOT_ALLOWED` | 조회 API 를 GET 외 메서드로, 판정·추천 API 를 POST 외 메서드로 호출 |
 | 503 | `DATA_UNAVAILABLE` | 서버 시작 때 데이터 로딩 실패 → "학과 정보를 불러올 수 없어요" 팝업 |
 | 500 | `INTERNAL_ERROR` | 그 밖의 서버 오류 |
 
@@ -168,3 +168,96 @@ boolean open = store.offeredThisTerm("AIE2001");          // 최신 시간표에
 - 모델의 목록·맵은 읽기 전용이다. `add`/`remove` 하면 `UnsupportedOperationException`. 가공이 필요하면 `new ArrayList<>(...)`로 복사해서 쓴다.
 - `null`인 목록은 의미가 있다: 핵심교양 `Area.courses == null`이면 영역 안 아무 과목이나 인정.
 - 시간 겹침은 `service.TimetableService.conflicts(...)`.
+
+---
+
+# BE B: 판정·추천 API
+
+학생이 담은 과목을 JSON 본문으로 보낸다. 두 API 모두 요청 본문이 같고, **FE `js/api.js`의 `apiEvaluate(payload)`가 이미 보내는 모양 그대로** 받는다.
+응답도 FE mock(`js/mock.js`의 `evaluateState`, `js/render-common.js`의 `buildNextSemesterPlan`)과 같은 필드라서, `USE_MOCK = false`로 바꿔도 화면 코드는 바꿀 필요가 없다.
+
+## 요청 본문 (공통)
+
+```json
+{ "dept": "ai", "year": 2025,
+  "courses": [ { "code": "AIE1001", "category": "MAJOR_REQ" }, { "code": "CSE3207", "category": "GEN_ELEC" } ],
+  "certs": ["toeic"] }
+```
+
+| 필드 | 필수 | 설명 |
+|---|---|---|
+| `dept` + `year` | ✅ | 학과 코드(`ai`, `cse`)와 입학연도. 서버에서 `ai_2025`처럼 교과과정 id로 바꾼다. `year`는 `"2025"` 문자열도 됨 |
+| `curriculum` | | `dept`+`year` 대신 교과과정 id(`ai_2025`)로 보내도 된다. 둘 다 보내면 같아야 함 (다르면 400) |
+| `courses` | | 이수한 과목. `code`는 대소문자·앞뒤 공백 무시, 같은 과목은 한 번만 센다. 최대 300개 |
+| `courses[].category` | | 학생이 과목 입력 창에서 고른 구분. **전공필수·교양필수처럼 교과과정이 정한 과목은 무시**하고, 그 밖의 과목만 `MAJOR_ELEC`·`GEN_ELEC`·`FREE_ELEC` 선택을 따른다 |
+| `certs` | | 취득한 졸업인증 id (`toeic`, `toeic_speaking`, `toefl_pbt`, `toefl_cbt`, `toefl_ibt`, `new_teps`, `opic`, `ielts`, `course`, `specialLecture`) |
+| `pastSemesters` | | **다음 학기 추천만.** 입학 후 지난 학기 수 0~8. 없으면 서버가 오늘 날짜(한국 시간)로 계산 (FE `computePastSemesters`와 같은 규칙) |
+
+범주 코드 (FE와 같음): `MAJOR_REQ` 전공필수+전공기초, `MAJOR_ELEC` 전공선택, `GEN_REQ` 교양필수(영역 `focus` `basic` `core` `swai` `creative`), `GEN_ELEC` 교양선택, `FREE_ELEC` 일반선택.
+
+## POST /api/evaluate — 02 대시보드 여의주 4개
+
+```json
+{ "curriculum": { "id": "ai_2025", "departmentCode": "AIE", "department": "인공지능공학과", "year": 2025 },
+  "summary": { "satisfiedCount": 1, "totalCount": 4, "percent": 25 },
+  "cards": [
+    { "key": "total", "name": "총학점", "satisfied": false, "earned": 17, "required": 130,
+      "breakdown": { "major": 3, "general": 11, "free": 3 } },
+    { "key": "major", "name": "전공필수", "satisfied": false, "earnedCourses": 1, "requiredCourses": 14,
+      "earned": 3, "required": 43,
+      "remaining": [ { "code": "AIE1002", "name": "객체지향프로그래밍 2", "credit": 3, "grade": 1 } ] },
+    { "key": "general", "name": "교양필수", "satisfied": false, "earned": 8, "required": 34,
+      "areas": [ { "key": "focus", "name": "중점교양", "desc": "공통 지정 과목: ...", "earned": 2, "required": 4, "satisfied": false } ] },
+    { "key": "cert", "name": "졸업인증", "satisfied": true,
+      "options": [ { "id": "toeic", "label": "TOEIC 700점 이상" }, ... ], "rule": "one-of" } ],
+  "unknownCourses": ["ZZZ9999"] }
+```
+
+- `cards` 순서는 항상 total → major → general → cert.
+- 전공필수 카드는 전공기초(일반수학 1·2, 통계학 등)를 포함한다. `remaining`은 교과과정표 순서, `grade`는 권장 학년.
+- 교양필수: 지정 과목(`allOf`)은 모두, 택1 목록(`oneOf`)과 핵심교양 영역은 하나씩. **같은 택1 목록·같은 영역에서 두 과목을 들어도 첫 과목만 인정**한다.
+  - mock과 다른 점 한 가지: mock은 의사소통 영어(GEB1107~1109)를 두 과목 이상 담으면 학점을 모두 더해서, 지정 과목을 안 들어도 기초교양이 충족될 수 있었다. 서버는 영어 한 과목만 인정한다.
+- `breakdown`은 mock과 같이 전공필수 / 교양필수(영역 인정과 상관없이 GEN_REQ 학점 합) / 그 밖(전공선택·교양선택·일반선택).
+- `unknownCourses`: 데이터 어디에도 없는 학수번호. 학점 계산에서 빠진다 (200 응답).
+- 졸업인증 선택지는 `GET /api/certification`과 같은 데이터로 학과·입학연도에 맞게 만든다.
+
+## POST /api/next-semester — 04 다음 학기 추천
+
+요청 예: `{ "dept": "cse", "year": 2025, "courses": [ { "code": "CSE1101" }, { "code": "MTH1901" } ], "pastSemesters": 2 }`
+
+```json
+{ "curriculum": { ... }, "pastSemesters": 2,
+  "pastYear": 1, "pastSem": 2, "nextYear": 2, "nextSem": 1,
+  "urgent": [
+    { "code": "CSE1103", "name": "객체지향프로그래밍 2", "credit": 3, "category": "MAJOR_REQ", "grade": 1,
+      "recPosition": 2, "reason": "객체지향프로그래밍 1 다음 과목이고 1학년 과목(CSE1103)이에요.",
+      "estimated": false, "prerequisites": ["CSE1101"], "offeredThisTerm": true } ],
+  "relaxed": [] }
+```
+
+- 후보: 아직 안 들은 전공필수+전공기초 중 권장 학년·학기가 있는 과목.
+- `urgent` (놓치면 1년 밀려요): 권장 학기가 다음 학기와 같거나 더 이전. `relaxed` (천천히 해도 괜찮아요): 다음 학기 학년의 바로 다음 학년 과목만 (목록이 너무 길어지지 않게).
+- `recPosition`: 1학년 1학기 = 1, 1학년 2학기 = 2 … 두 목록 모두 이 순서로 정렬.
+- `prerequisites`, `offeredThisTerm`(최신 시간표에 분반 있음)은 mock에 없는 추가 필드. 화면에서 안 쓰면 무시해도 된다.
+
+### FE 연결 예 (api.js)
+
+```js
+function apiNextSemester(payload) {
+  if (USE_MOCK) return mockDelay(function () { return buildNextSemesterPlan(payload.pastSemesters); });
+  return fetch('api/next-semester', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+  }).then(handleFetchResponse);
+}
+// 호출: apiNextSemester({ dept: state.dept, year: state.year, courses: state.courses })
+```
+
+## 서버 코드 위치
+
+| 파일 | 하는 일 |
+|---|---|
+| `service/CourseClassifier.java` | 학수번호 → 범주 코드·교양 영역 (FE `curriculum-data.js`의 category/area와 같게) |
+| `service/EvaluationService.java` | 판정 (카드 4개) |
+| `service/RecommendService.java` | 다음 학기 추천 |
+| `servlet/PostApiServlet.java` | POST 공통: JSON 본문 읽기, dept+year → 교과과정, 오류 응답 |
+| `servlet/EvaluateServlet.java`, `servlet/NextSemesterServlet.java` | 위 두 API |
