@@ -11,9 +11,11 @@ import kr.inha.gradcheck.model.Curriculum;
 /**
  * GET /api/courses — 학과 교과과정 과목 (03 과목 입력 · 교과과정 탭).
  *
- * 파라미터: curriculum (필수, 예: ai_2025), type (이수구분, 예: 전공필수), category (major | general),
- * grade (권장 학년 1~4).
+ * 파라미터: curriculum (필수, 예: ai_2025. dept=ai&amp;year=2025 로 보내도 됨), type (이수구분, 예: 전공필수),
+ * category (major | general), grade (권장 학년 1~4).
  * 응답: {"curriculum": {...}, "count": n, "courses": [Course...]}
+ *
+ * q 가 있으면 직접 검색으로 보고 GET /api/courses/search 와 같은 응답을 준다 (FE api.js 의 apiGetCourses({q, scope})).
  */
 @WebServlet("/api/courses")
 public class CoursesServlet extends ApiServlet {
@@ -24,6 +26,9 @@ public class CoursesServlet extends ApiServlet {
 	@Override
 	protected Object get(HttpServletRequest req) {
 		Curriculum c = curriculum(req);
+		if (optional(req, "q") != null) {
+			return CourseSearchServlet.search(store(), c, req);
+		}
 		String type = optional(req, "type");
 		String category = optional(req, "category");
 		if (category != null && !CATEGORIES.contains(category)) {

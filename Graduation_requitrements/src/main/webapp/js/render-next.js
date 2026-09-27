@@ -64,7 +64,7 @@ function renderNext() {
           '<p class="dashboard-header__subtitle"><strong>' + plan.pastYear + '학년 ' + plan.pastSem + '학기</strong>까지 들은 기준이에요. 교과목 편성표의 권장 학기와 학수번호 학년을 기준으로 나눴어요. 실제 개설 여부는 수강편람에서 확인하세요.</p>' +
         '</div>' +
         '<div class="dashboard-header__actions">' +
-          '<button type="button" class="btn btn--outline" data-action="toast-wip">교양 과목도 추천 받기</button>' +
+          '<button type="button" class="btn btn--outline" data-action="go-survey">교양 과목도 추천 받기</button>' +
           '<button type="button" class="btn btn--primary" data-action="toast-wip">시간표 짜기 →</button>' +
         '</div>' +
       '</div>' +
@@ -96,6 +96,9 @@ function bindNextEvents() {
 
   Array.prototype.forEach.call(el.querySelectorAll('[data-action="toast-wip"]'), function (btn) {
     btn.addEventListener('click', function () { showToast('준비 중이에요'); });
+  });
+  Array.prototype.forEach.call(el.querySelectorAll('[data-action="go-survey"]'), function (btn) {
+    btn.addEventListener('click', goSurvey);
   });
 
   var moreBtn = document.getElementById('next-relaxed-more-btn');

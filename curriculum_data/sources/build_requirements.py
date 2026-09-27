@@ -24,15 +24,24 @@ for dc,(dn,tag) in DEPTS.items():
           {'id':'swai','name':'SW·AI (일반교양 7영역)','credits':3,'oneOf':[{'name':'SW·AI기반 탄소중립 / 신기술(융합) 트랙 과목','courses':sw,'credits':3}]},
           {'id':'creative','name':'창의','credits':3,'oneOf':[{'name':'창의 영역 택1','courses':creative,'credits':3}]},
         ]
+        # 마이크로전공 판정용: components 마다 courses 중 한 과목 이상 이수하면 충족 (autoCheck 항목)
+        sw_carbon=[r['학수번호'] for r in ge if r['적용연도']==str(yr) and r['대분류']=='일반교양' and r['영역번호']=='7'
+                   and r['SW마이크로전공트랙']=='SW·AI기반 탄소중립']
         extra=[]
         if dc=='AIE':
             extra.append({'id':'microMajor','name':"'탄소중립' 마이크로전공 이수 (2023학년도 신입생부터)",
                           'rule':'핵심교양 6영역 GED6009 + 창의영역 택1 + 일반교양 7영역(탄소중립 마이크로전공 교과) 택1 = 9학점',
-                          'coveredBy':['core.area6','creative','swai'],'autoCheck':True})
+                          'coveredBy':['core.area6','creative','swai'],'autoCheck':True,
+                          'components':[{'name':'핵심교양 6영역 GED6009','courses':['GED6009']},
+                                        {'name':'창의영역 택1','courses':creative},
+                                        {'name':'일반교양 7영역 탄소중립 트랙 택1','courses':sw_carbon}]})
         else:
             extra+=[{'id':'microMajor','name':'SW중심대학 마이크로전공 이수',
                      'rule':'미래사회와 소프트웨어-IT계열(GEB1143) + 핵심교양 6영역 GED6009 + 일반교양 7영역(탄소중립/신기술(융합) 트랙) 택1',
-                     'coveredBy':['basic','core.area6','swai'],'autoCheck':True},
+                     'coveredBy':['basic','core.area6','swai'],'autoCheck':True,
+                     'components':[{'name':'미래사회와 소프트웨어-IT계열 GEB1143','courses':['GEB1143']},
+                                   {'name':'핵심교양 6영역 GED6009','courses':['GED6009']},
+                                   {'name':'일반교양 7영역 탄소중립/신기술(융합) 트랙 택1','courses':sw}]},
                     {'id':'gradExam','name':'졸업고사 응시(졸업학기)','autoCheck':False,
                      'alternatives':['전공성적 3.3 이상 성적표','정보처리기사','제1저자 논문 게재확인서 또는 논문 첫장·개요','TOPCIT 270점 이상','i-PAC 인증서 B등급 이상']},
                     {'id':'topcit','name':'TOPCIT 응시 필수','rule':'3학년 이상 재학 중 총 2회 응시','autoCheck':False}]

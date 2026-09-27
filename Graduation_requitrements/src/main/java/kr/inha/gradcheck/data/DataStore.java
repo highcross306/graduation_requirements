@@ -120,6 +120,30 @@ public final class DataStore {
 		return latestOfferedCodes.contains(code);
 	}
 
+	/**
+	 * 어떤 학기(예: "2027-1")의 개설 여부를 짐작할 때 쓸 시간표. 그 학기 시간표가 있으면 그것,
+	 * 없으면 같은 학기(1학기·2학기)의 가장 최근 시간표. 둘 다 없으면 empty.
+	 * 1학기 과목을 2학기 시간표로 판단하지 않기 위해 다른 학기 시간표는 쓰지 않는다.
+	 */
+	public Optional<Timetable> timetableFor(String term) {
+		if (term == null) {
+			return Optional.empty();
+		}
+		Timetable exact = timetables.get(term);
+		if (exact != null) {
+			return Optional.of(exact);
+		}
+		String[] p = term.split("-");
+		if (p.length != 2) {
+			return Optional.empty();
+		}
+		String semSuffix = "-" + p[1];
+		return timetables.entrySet().stream()
+				.filter(e -> e.getKey().endsWith(semSuffix) && termOrder(e.getKey()) < termOrder(term))
+				.map(Map.Entry::getValue)
+				.reduce((a, b) -> b); // timetables 는 오래된 순
+	}
+
 	// ---- 과목 찾기 ----
 
 	/**

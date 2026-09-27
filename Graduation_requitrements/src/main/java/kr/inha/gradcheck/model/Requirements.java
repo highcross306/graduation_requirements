@@ -96,14 +96,24 @@ public record Requirements(
 	 * 학점 외 졸업요건 (마이크로전공, 졸업고사, TOPCIT).
 	 *
 	 * @param coveredBy 이 요건이 어떤 교양 그룹 충족으로 함께 채워지는지 (예: "core.area6")
-	 * @param autoCheck false 면 앱이 판정할 수 없는 항목 (학생이 직접 체크)
+	 * @param autoCheck  false 면 앱이 판정할 수 없는 항목 (학생이 직접 체크)
+	 * @param components autoCheck 항목의 판정 기준. 모든 component 를 채우면 충족
 	 */
 	public record ExtraRequirement(String id, String name, String rule, List<String> coveredBy,
-			boolean autoCheck, List<String> alternatives) {
+			boolean autoCheck, List<String> alternatives, List<Component> components) {
 
 		public ExtraRequirement {
 			coveredBy = Immutables.list(coveredBy);
 			alternatives = Immutables.list(alternatives);
+			components = Immutables.list(components);
+		}
+	}
+
+	/** 학점 외 요건의 한 부분: courses 중 한 과목 이상 이수하면 충족. */
+	public record Component(String name, List<String> courses) {
+
+		public Component {
+			courses = Immutables.list(courses);
 		}
 	}
 }

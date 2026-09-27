@@ -25,17 +25,22 @@ import kr.inha.gradcheck.service.CourseClassifier.Classified;
  * <p>
  * 규칙
  * <ul>
- * <li>총학점: 담은 과목 학점 합 &gt;= 졸업학점(130)</li>
+ * <li>총학점: 담은 과목 학점 합 &gt;= 졸업학점(130), 그리고 전공 학점(전공필수·전공기초·전공선택) &gt;= 전공 이수학점(65)</li>
  * <li>전공필수: 전공필수 + 전공기초 과목을 모두 이수</li>
  * <li>교양필수: 영역(중점·기초·핵심·SW·AI·창의)마다 지정 과목을 모두 이수하고, 택1 목록·핵심교양 영역은 하나씩 이수.
  * 같은 택1 목록이나 같은 핵심교양 영역에서 두 과목을 들으면 첫 과목만 인정</li>
- * <li>졸업인증: certs 에 인정 방법(TOEIC 등) 중 하나라도 있으면 충족</li>
+ * <li>졸업인증: certs 에 인정 방법(TOEIC 등) 중 하나라도 있거나, 졸업인증실용영어(GEE3001)를 담았으면 충족</li>
+ * <li>학점 외 요건(extraRequirements): 마이크로전공은 components 마다 한 과목씩 담았는지 판정, 졸업고사·TOPCIT 은
+ * 앱이 알 수 없어 satisfied = null (직접 확인). 여의주 4개(summary)에는 세지 않는다</li>
  * <li>재수강, F 학점은 다루지 않는다. 같은 학수번호를 두 번 보내면 한 번만 센다</li>
  * </ul>
  */
 public final class EvaluationService {
 
 	private static final int CARD_COUNT = 4;
+
+	/** 졸업인증 대체 방법 중 과목 이수로 인정되는 것: 선택지 id → 학수번호. */
+	private static final Map<String, String> CERT_COURSES = Map.of("course", "GEE3001");
 
 	private EvaluationService() {
 	}
@@ -46,8 +51,27 @@ public final class EvaluationService {
 
 	// ---- 응답 (필드 이름은 mock.js 와 같게) ----
 
+	/**
+	 * @param extraRequirements 여의주 4개 밖의 졸업요건 (마이크로전공, 컴공 졸업고사·TOPCIT). summary 에는 세지 않는다
+	 */
 	public record Result(Map<String, Object> curriculum, Summary summary, List<Object> cards,
-			List<String> unknownCourses) {
+			List<ExtraResult> extraRequirements, List<String> unknownCourses) {
+	}
+
+	/**
+	 * 학점 외 졸업요건 하나.
+	 *
+	 * @param autoCheck    앱이 담은 과목으로 판정하는지. false 면 학생이 직접 확인해야 하는 항목
+	 * @param satisfied    autoCheck 면 true/false, 아니면 null (앱이 알 수 없음)
+	 * @param components   autoCheck 항목의 세부 조건별 충족 여부
+	 * @param alternatives 대신 인정되는 방법 (졸업고사 등)
+	 */
+	public record ExtraResult(String id, String name, String rule, boolean autoCheck, Boolean satisfied,
+			List<ComponentResult> components, List<String> alternatives) {
+	}
+
+	/** @param course 이 조건을 채운 과목 학수번호 (없으면 null) */
+	public record ComponentResult(String name, boolean satisfied, String course) {
 	}
 
 	public record Summary(int satisfiedCount, int totalCount, int percent) {
@@ -56,8 +80,15 @@ public final class EvaluationService {
 	public record Breakdown(int major, int general, int free) {
 	}
 
+	/**
+	 * @param majorCredits 전공 학점 요건 (단일전공 65). satisfied 는 총학점과 이 요건을 모두 채워야 true
+	 */
 	public record TotalCard(String key, String name, boolean satisfied, int earned, int required,
-			Breakdown breakdown) {
+			Breakdown breakdown, MajorCredits majorCredits) {
+	}
+
+	/** 전공 학점: 전공필수 + 전공기초(전공 학점에 포함될 때) + 전공선택. */
+	public record MajorCredits(int earned, int required, boolean satisfied) {
 	}
 
 	public record MajorCard(String key, String name, boolean satisfied, int earnedCourses, int requiredCourses,
@@ -75,7 +106,9 @@ public final class EvaluationService {
 	public record AreaResult(String key, String name, String desc, int earned, int required, boolean satisfied) {
 	}
 
-	public record CertCard(String key, String name, boolean satisfied, List<CertOption> options, String rule) {
+	/** @param satisfiedBy 충족한 선택지 id (certs 로 받은 것 + 과목 이수로 인정된 것) */
+	public record CertCard(String key, String name, boolean satisfied, List<CertOption> options, String rule,
+			List<String> satisfiedBy) {
 	}
 
 	public record CertOption(String id, String label) {
@@ -114,7 +147,7 @@ public final class EvaluationService {
 		TotalCard total = totalCard(r, taken);
 		MajorCard major = majorCard(store, curriculum, taken);
 		GeneralCard general = generalCard(store, curriculum, taken);
-		CertCard cert = certCard(store, curriculum, certs);
+		CertCard cert = certCard(store, curriculum, certs, seen);
 
 		List<Object> cards = List.of(total, major, general, cert);
 		int satisfied = (total.satisfied() ? 1 : 0) + (major.satisfied() ? 1 : 0) + (general.satisfied() ? 1 : 0)
@@ -126,15 +159,44 @@ public final class EvaluationService {
 		cur.put("departmentCode", curriculum.departmentCode());
 		cur.put("department", curriculum.department());
 		cur.put("year", curriculum.year());
-		return new Result(cur, summary, cards, unknown);
+		return new Result(cur, summary, cards, extraRequirements(r, taken), unknown);
 	}
 
-	/** 총학점. breakdown 은 mock.js 와 같이 전공필수 / 교양필수 / 그 밖(전공선택·교양선택·일반선택). */
+	/** 학점 외 졸업요건. autoCheck 항목은 components 를 모두 채웠는지 보고, 나머지는 satisfied = null. */
+	private static List<ExtraResult> extraRequirements(Requirements r, List<Classified> taken) {
+		List<ExtraResult> results = new ArrayList<>();
+		for (Requirements.ExtraRequirement e : r.extraRequirements()) {
+			if (!e.autoCheck() || e.components() == null || e.components().isEmpty()) {
+				results.add(new ExtraResult(e.id(), e.name(), e.rule(), false, null, List.of(), e.alternatives()));
+				continue;
+			}
+			List<ComponentResult> components = new ArrayList<>();
+			boolean all = true;
+			for (Requirements.Component comp : e.components()) {
+				String course = taken.stream().map(Classified::code)
+						.filter(code -> comp.courses() != null && comp.courses().contains(code))
+						.findFirst().orElse(null);
+				components.add(new ComponentResult(comp.name(), course != null, course));
+				all &= course != null;
+			}
+			results.add(new ExtraResult(e.id(), e.name(), e.rule(), true, all, components, e.alternatives()));
+		}
+		return results;
+	}
+
+	/**
+	 * 총학점 + 전공 학점. breakdown 은 mock.js 와 같이 전공필수 / 교양필수 / 그 밖(전공선택·교양선택·일반선택).
+	 */
 	private static TotalCard totalCard(Requirements r, List<Classified> taken) {
+		Set<String> foundationNotMajor = new HashSet<>();
+		if (r.majorFoundation() != null && Boolean.FALSE.equals(r.majorFoundation().countsTowardMajor())) {
+			foundationNotMajor.addAll(r.majorFoundation().courses());
+		}
 		int sum = 0;
 		int major = 0;
 		int general = 0;
 		int free = 0;
+		int majorCredits = 0;
 		for (Classified c : taken) {
 			sum += c.credits();
 			switch (c.category()) {
@@ -142,9 +204,16 @@ public final class EvaluationService {
 				case CourseClassifier.GEN_REQ -> general += c.credits();
 				default -> free += c.credits();
 			}
+			boolean countsAsMajor = CourseClassifier.MAJOR_ELEC.equals(c.category())
+					|| CourseClassifier.MAJOR_REQ.equals(c.category()) && !foundationNotMajor.contains(c.code());
+			if (countsAsMajor) {
+				majorCredits += c.credits();
+			}
 		}
-		return new TotalCard("total", "총학점", sum >= r.totalCredits(), sum, r.totalCredits(),
-				new Breakdown(major, general, free));
+		int majorRequired = r.majorCredits() == null ? 0 : r.majorCredits().single();
+		MajorCredits mc = new MajorCredits(majorCredits, majorRequired, majorCredits >= majorRequired);
+		return new TotalCard("total", "총학점", sum >= r.totalCredits() && mc.satisfied(), sum, r.totalCredits(),
+				new Breakdown(major, general, free), mc);
 	}
 
 	/** 전공필수 + 전공기초. 남은 과목은 교과과정표 순서. */
@@ -256,13 +325,28 @@ public final class EvaluationService {
 		return g.note() == null ? "" : g.note();
 	}
 
-	/** 영어졸업인증. 학과·입학연도에 맞는 기준 점수와 대체 방법을 선택지로 준다. */
-	private static CertCard certCard(DataStore store, Curriculum curriculum, List<String> certs) {
+	/**
+	 * 영어졸업인증. 학과·입학연도에 맞는 기준 점수와 대체 방법을 선택지로 준다.
+	 *
+	 * @param takenCodes 담은 과목 학수번호 (대문자). 졸업인증실용영어를 담았으면 certs 에 없어도 충족
+	 */
+	private static CertCard certCard(DataStore store, Curriculum curriculum, List<String> certs,
+			Set<String> takenCodes) {
 		List<CertOption> options = certOptions(store.certification(), curriculum);
 		Set<String> ids = new LinkedHashSet<>();
 		options.forEach(o -> ids.add(o.id()));
-		boolean satisfied = certs.stream().anyMatch(ids::contains);
-		return new CertCard("cert", "졸업인증", satisfied, options, "one-of");
+		Set<String> satisfiedBy = new LinkedHashSet<>();
+		for (String id : certs) {
+			if (ids.contains(id)) {
+				satisfiedBy.add(id);
+			}
+		}
+		CERT_COURSES.forEach((id, code) -> {
+			if (ids.contains(id) && takenCodes.contains(code)) {
+				satisfiedBy.add(id);
+			}
+		});
+		return new CertCard("cert", "졸업인증", !satisfiedBy.isEmpty(), options, "one-of", List.copyOf(satisfiedBy));
 	}
 
 	/**

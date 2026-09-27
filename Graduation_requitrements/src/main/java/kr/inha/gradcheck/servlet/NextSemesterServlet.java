@@ -31,6 +31,6 @@ public class NextSemesterServlet extends PostApiServlet {
 			}
 		}
 		DataStore store = store();
-		return RecommendService.nextSemester(c, taken, body.pastSemesters(), store::offeredThisTerm);
+		return RecommendService.nextSemester(c, taken, body.pastSemesters(), store::timetableFor);
 	}
 }

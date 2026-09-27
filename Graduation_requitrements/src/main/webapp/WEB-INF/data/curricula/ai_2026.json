@@ -944,7 +944,52 @@
           "creative",
           "swai"
         ],
-        "autoCheck": true
+        "autoCheck": true,
+        "components": [
+          {
+            "name": "핵심교양 6영역 GED6009",
+            "courses": [
+              "GED6009"
+            ]
+          },
+          {
+            "name": "창의영역 택1",
+            "courses": [
+              "GEE4001",
+              "GEE4004",
+              "GEE4005",
+              "GEE4006",
+              "GEE4007",
+              "GEE4009",
+              "GEE4010",
+              "GEE4012",
+              "GEE4013",
+              "GEE4014",
+              "GEE4016",
+              "GEE4018",
+              "GEE4019",
+              "GEE4020",
+              "GEE4021",
+              "GEE4025",
+              "GEE4026",
+              "GEE4035",
+              "GEE4036",
+              "GEE4037",
+              "GEE4038"
+            ]
+          },
+          {
+            "name": "일반교양 7영역 탄소중립 트랙 택1",
+            "courses": [
+              "GEE7008",
+              "GEE7012",
+              "GEE7013",
+              "GEE7014",
+              "GEE7015",
+              "GEE7016"
+            ]
+          }
+        ]
       }
     ],
     "certifications": [
