@@ -2,10 +2,12 @@
    render-next.js — 04 다음 학기 추천 (#next)
    전공필수(전공기초 포함) 과목의 편성표 권장 학년·학기를 "지난 학기"와
    비교해서 "놓치면 1년 밀려요" / "천천히 해도 괜찮아요"로 나눠 보여준다.
+   추천 목록은 서버(api/next-semester)가 계산한다. 화면은 받은 plan 을 그리기만 한다.
    ============================================================ */
 
-var _nextUi = { relaxedExpanded: false };
+var _nextUi = { relaxedExpanded: false, plan: null };
 
+/* 서버에서 추천을 받아온 뒤 그린다. 과목이 바뀔 때마다(들었어요 버튼 등) 다시 부른다. */
 function renderNext() {
   var el = document.getElementById('view-next');
 
@@ -24,7 +26,21 @@ function renderNext() {
     return;
   }
 
-  var plan = buildNextSemesterPlan();
+  showLoading();
+  apiNextSemester({ dept: state.dept, year: state.year, courses: state.courses })
+    .then(function (plan) {
+      hideLoading();
+      _nextUi.plan = plan;
+      if (getCurrentRoute() === 'next') renderNextPlan(plan);
+    })
+    .catch(function () {
+      hideLoading();
+      showErrorOverlay(renderNext);
+    });
+}
+
+function renderNextPlan(plan) {
+  var el = document.getElementById('view-next');
   var VISIBLE = 6;
   var visibleRelaxed = _nextUi.relaxedExpanded ? plan.relaxed : plan.relaxed.slice(0, VISIBLE);
   var relaxedMoreCount = plan.relaxed.length - visibleRelaxed.length;
@@ -105,7 +121,7 @@ function bindNextEvents() {
   if (moreBtn) {
     moreBtn.addEventListener('click', function () {
       _nextUi.relaxedExpanded = true;
-      renderNext();
+      renderNextPlan(_nextUi.plan);
     });
   }
 

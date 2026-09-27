@@ -185,7 +185,7 @@ public final class EvaluationService {
 	}
 
 	/**
-	 * 총학점 + 전공 학점. breakdown 은 mock.js 와 같이 전공필수 / 교양필수 / 그 밖(전공선택·교양선택·일반선택).
+	 * 총학점 + 전공 학점. breakdown 은 전공(전공필수·전공기초·전공선택) / 교양(교양필수·교양선택) / 일반선택.
 	 */
 	private static TotalCard totalCard(Requirements r, List<Classified> taken) {
 		Set<String> foundationNotMajor = new HashSet<>();
@@ -200,8 +200,8 @@ public final class EvaluationService {
 		for (Classified c : taken) {
 			sum += c.credits();
 			switch (c.category()) {
-				case CourseClassifier.MAJOR_REQ -> major += c.credits();
-				case CourseClassifier.GEN_REQ -> general += c.credits();
+				case CourseClassifier.MAJOR_REQ, CourseClassifier.MAJOR_ELEC -> major += c.credits();
+				case CourseClassifier.GEN_REQ, CourseClassifier.GEN_ELEC -> general += c.credits();
 				default -> free += c.credits();
 			}
 			boolean countsAsMajor = CourseClassifier.MAJOR_ELEC.equals(c.category())
