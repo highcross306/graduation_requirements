@@ -110,10 +110,11 @@ function buildProgressBannerHTML(result) {
    ------------------------------------------------------------ */
 
 function buildEmptyStateCardHTML() {
+  var req = getActiveRequirements();
   var items = [
-    { key: 'total', label: '총학점<br>130학점' },
-    { key: 'major', label: '전공필수<br>12과목' },
-    { key: 'general', label: '교양필수<br>39학점' },
+    { key: 'total', label: '총학점<br>' + req.totalRequired + '학점' },
+    { key: 'major', label: '전공필수<br>' + req.majorRequiredCount + '과목' },
+    { key: 'general', label: '교양필수<br>' + req.credits.general + '학점' },
     { key: 'cert', label: '졸업인증<br>영어 등' }
   ];
   var orbsHTML = items.map(function (item) {
@@ -258,11 +259,15 @@ function buildGeneralCardHTML(card) {
 
 function buildTotalCardHTML(card) {
   var pct = Math.min(100, Math.round((card.earned / card.required) * 100));
+  // 서버는 총 130학점 + 전공 65학점(majorCredits)을 함께 본다. 전공 학점도 총학점에 들어가므로 남은 학점은 둘 중 큰 쪽
+  var majorShort = card.majorCredits ? Math.max(0, card.majorCredits.required - card.majorCredits.earned) : 0;
+  var totalShort = Math.max(0, card.required - card.earned);
+  var badgeText = totalShort === 0 && majorShort > 0 ? '전공 ' + majorShort + '학점 부족' : totalShort + '학점 남음';
   var badge = card.satisfied
     ? '<span class="badge badge--ok">✓ 모았어요</span>'
-    : '<span class="badge badge--bad">' + Math.max(0, card.required - card.earned) + '학점 남음</span>';
+    : '<span class="badge badge--bad">' + badgeText + '</span>';
 
-  var remainingCredit = Math.max(0, card.required - card.earned);
+  var remainingCredit = card.satisfied ? 0 : Math.max(totalShort, majorShort);
   var remainingSemesters = Math.max(0, 8 - computePastSemesters(state.year));
   var perSemester = remainingSemesters > 0 ? Math.ceil(remainingCredit / remainingSemesters) : remainingCredit;
 
@@ -287,8 +292,11 @@ function buildCertCardHTML(card) {
     ? '<span class="badge badge--ok">✓ 모았어요</span>'
     : '<span class="badge badge--bad">미충족</span>';
 
+  var satisfiedBy = card.satisfiedBy || [];
   var optionsHTML = card.options.map(function (opt) {
-    var checked = state.certs.indexOf(opt.id) !== -1 ? ' checked' : '';
+    var byCourse = state.certs.indexOf(opt.id) === -1 && satisfiedBy.indexOf(opt.id) !== -1;
+    var checked = state.certs.indexOf(opt.id) !== -1 || byCourse ? ' checked' : '';
+    if (byCourse) checked += ' disabled';
     return (
       '<label class="check-row">' +
         '<input type="checkbox" class="check-row__input" data-cert-id="' + opt.id + '"' + checked + '>' +
