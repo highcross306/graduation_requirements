@@ -216,6 +216,15 @@ Optional<Timetable> t = store.timetableFor("2027-1");     // 그 학기 시간�
     { "key": "cert", "name": "졸업인증", "satisfied": true,
       "options": [ { "id": "toeic", "label": "TOEIC 700점 이상" }, ... ], "rule": "one-of",
       "satisfiedBy": ["toeic"] } ],
+  "extraRequirements": [
+    { "id": "microMajor", "name": "SW중심대학 마이크로전공 이수", "rule": "...", "autoCheck": true, "satisfied": false,
+      "components": [ { "name": "미래사회와 소프트웨어-IT계열 GEB1143", "satisfied": true, "course": "GEB1143" },
+                      { "name": "핵심교양 6영역 GED6009", "satisfied": false, "course": null }, ... ],
+      "alternatives": [] },
+    { "id": "gradExam", "name": "졸업고사 응시(졸업학기)", "rule": null, "autoCheck": false, "satisfied": null,
+      "components": [], "alternatives": ["전공성적 3.3 이상 성적표", "정보처리기사", ...] },
+    { "id": "topcit", "name": "TOPCIT 응시 필수", "rule": "3학년 이상 재학 중 총 2회 응시", "autoCheck": false,
+      "satisfied": null, "components": [], "alternatives": [] } ],
   "unknownCourses": ["ZZZ9999"] }
 ```
 
@@ -229,6 +238,12 @@ Optional<Timetable> t = store.timetableFor("2027-1");     // 그 학기 시간�
 - `breakdown`은 mock과 같이 전공필수 / 교양필수(영역 인정과 상관없이 GEN_REQ 학점 합) / 그 밖(전공선택·교양선택·일반선택).
 - `unknownCourses`: 데이터 어디에도 없는 학수번호. 학점 계산에서 빠진다 (200 응답).
 - 졸업인증 선택지는 `GET /api/certification`과 같은 데이터로 학과·입학연도에 맞게 만든다.
+- `extraRequirements`: 여의주 4개 밖의 졸업요건. **`summary`(여의주 개수)에는 세지 않으니** 대시보드에 따로 보여줘야 한다.
+  - 인공지능공학과: `microMajor`('탄소중립' 마이크로전공) 하나. 컴퓨터공학과: `microMajor`(SW중심대학 마이크로전공), `gradExam`(졸업고사), `topcit`(TOPCIT 2회 응시).
+  - `autoCheck: true`(마이크로전공): `components`마다 지정 과목 중 하나를 담았는지 판정. 모두 채우면 `satisfied: true`. `course`는 그 조건을 채운 과목.
+    - 인공지능공학과 마이크로전공의 7영역은 **탄소중립 트랙 과목만** 인정한다(GEE7008·7012·7013·7014·7015·7016). 신기술(융합) 트랙 과목은 교양필수 SW·AI 영역은 채우지만 마이크로전공은 못 채운다.
+  - `autoCheck: false`(졸업고사, TOPCIT): 앱이 알 수 없어서 `satisfied: null`. "직접 확인 필요"로 표시하고, `alternatives`(대체 인정 방법)가 있으면 함께 보여준다.
+  - 판정 기준 데이터는 `curricula/*.json`의 `requirements.extraRequirements[].components` (`curriculum_data/sources/build_requirements.py`에서 생성). `GET /api/requirements`에도 같은 값이 들어 있다.
 - 졸업인증 충족: `certs`에 선택지 id가 하나라도 있거나, **`courses`에 졸업인증실용영어(GEE3001)가 있으면** (`course` 선택지). `satisfiedBy`는 충족한 선택지 id 목록 — FE는 이걸로 체크박스를 켜 두면 된다. 모르는 id는 무시.
 
 ## POST /api/next-semester — 04 다음 학기 추천

@@ -30,6 +30,8 @@ import kr.inha.gradcheck.service.CourseClassifier.Classified;
  * <li>교양필수: 영역(중점·기초·핵심·SW·AI·창의)마다 지정 과목을 모두 이수하고, 택1 목록·핵심교양 영역은 하나씩 이수.
  * 같은 택1 목록이나 같은 핵심교양 영역에서 두 과목을 들으면 첫 과목만 인정</li>
  * <li>졸업인증: certs 에 인정 방법(TOEIC 등) 중 하나라도 있거나, 졸업인증실용영어(GEE3001)를 담았으면 충족</li>
+ * <li>학점 외 요건(extraRequirements): 마이크로전공은 components 마다 한 과목씩 담았는지 판정, 졸업고사·TOPCIT 은
+ * 앱이 알 수 없어 satisfied = null (직접 확인). 여의주 4개(summary)에는 세지 않는다</li>
  * <li>재수강, F 학점은 다루지 않는다. 같은 학수번호를 두 번 보내면 한 번만 센다</li>
  * </ul>
  */
@@ -49,8 +51,27 @@ public final class EvaluationService {
 
 	// ---- 응답 (필드 이름은 mock.js 와 같게) ----
 
+	/**
+	 * @param extraRequirements 여의주 4개 밖의 졸업요건 (마이크로전공, 컴공 졸업고사·TOPCIT). summary 에는 세지 않는다
+	 */
 	public record Result(Map<String, Object> curriculum, Summary summary, List<Object> cards,
-			List<String> unknownCourses) {
+			List<ExtraResult> extraRequirements, List<String> unknownCourses) {
+	}
+
+	/**
+	 * 학점 외 졸업요건 하나.
+	 *
+	 * @param autoCheck    앱이 담은 과목으로 판정하는지. false 면 학생이 직접 확인해야 하는 항목
+	 * @param satisfied    autoCheck 면 true/false, 아니면 null (앱이 알 수 없음)
+	 * @param components   autoCheck 항목의 세부 조건별 충족 여부
+	 * @param alternatives 대신 인정되는 방법 (졸업고사 등)
+	 */
+	public record ExtraResult(String id, String name, String rule, boolean autoCheck, Boolean satisfied,
+			List<ComponentResult> components, List<String> alternatives) {
+	}
+
+	/** @param course 이 조건을 채운 과목 학수번호 (없으면 null) */
+	public record ComponentResult(String name, boolean satisfied, String course) {
 	}
 
 	public record Summary(int satisfiedCount, int totalCount, int percent) {
@@ -138,7 +159,29 @@ public final class EvaluationService {
 		cur.put("departmentCode", curriculum.departmentCode());
 		cur.put("department", curriculum.department());
 		cur.put("year", curriculum.year());
-		return new Result(cur, summary, cards, unknown);
+		return new Result(cur, summary, cards, extraRequirements(r, taken), unknown);
+	}
+
+	/** 학점 외 졸업요건. autoCheck 항목은 components 를 모두 채웠는지 보고, 나머지는 satisfied = null. */
+	private static List<ExtraResult> extraRequirements(Requirements r, List<Classified> taken) {
+		List<ExtraResult> results = new ArrayList<>();
+		for (Requirements.ExtraRequirement e : r.extraRequirements()) {
+			if (!e.autoCheck() || e.components() == null || e.components().isEmpty()) {
+				results.add(new ExtraResult(e.id(), e.name(), e.rule(), false, null, List.of(), e.alternatives()));
+				continue;
+			}
+			List<ComponentResult> components = new ArrayList<>();
+			boolean all = true;
+			for (Requirements.Component comp : e.components()) {
+				String course = taken.stream().map(Classified::code)
+						.filter(code -> comp.courses() != null && comp.courses().contains(code))
+						.findFirst().orElse(null);
+				components.add(new ComponentResult(comp.name(), course != null, course));
+				all &= course != null;
+			}
+			results.add(new ExtraResult(e.id(), e.name(), e.rule(), true, all, components, e.alternatives()));
+		}
+		return results;
 	}
 
 	/**
