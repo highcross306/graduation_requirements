@@ -159,6 +159,13 @@ img, svg {
   color: var(--ok);
 }
 
+/* 앱이 판정할 수 없어 학생이 직접 확인하는 항목 */
+.badge--notice {
+  background: var(--notice-bg);
+  color: var(--notice-text-strong);
+  border: 1px solid var(--notice-border);
+}
+
 /* ------------------------------------------------------------
    카드
    ------------------------------------------------------------ */
@@ -1121,6 +1128,51 @@ img, svg {
 .total-card__detail {
   margin: 0;
   font-size: 12px;
+  color: var(--text-sub);
+}
+
+/* -- 추가 졸업요건 (마이크로전공, 졸업고사, TOPCIT) -- */
+
+.extra-req {
+  padding: 26px 28px;
+}
+
+.extra-req__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.extra-req__hint {
+  margin: 4px 0 8px;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+.extra-req__row {
+  align-items: flex-start;
+}
+
+.extra-req__parts {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+}
+
+.extra-req__part {
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+.extra-req__part--ok {
+  color: var(--ok);
+}
+
+.extra-req__course {
+  font-size: 11px;
   color: var(--text-sub);
 }
 

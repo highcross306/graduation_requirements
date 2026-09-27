@@ -25,6 +25,7 @@ function renderDashboard() {
     html += buildEmptyStateCardHTML();
   } else {
     html += buildReqCardsGridHTML(result);
+    html += buildExtraRequirementsHTML(result);
     html += buildNextBannerHTML();
   }
 
@@ -61,7 +62,9 @@ function buildDashboardHeaderHTML(isEmpty, isComplete, result) {
         orbSpan('cert', 'dashboard-header__orb') +
       '</div>' +
       '<h1 class="dashboard-header__title">여의주 4개 완성! 이제 학사모만 쓰면 돼요</h1>' +
-      '<p class="dashboard-header__subtitle">최종 졸업 여부는 학과 졸업사정에서 확정돼요.</p>';
+      '<p class="dashboard-header__subtitle">' +
+        (countOpenExtraRequirements(result) > 0 ? '아래 <strong>추가 졸업요건</strong>도 확인하세요. ' : '') +
+        '최종 졸업 여부는 학과 졸업사정에서 확정돼요.</p>';
   } else if (isEmpty) {
     titleBlock =
       '<h1 class="dashboard-header__title">아직 모은 여의주가 없어요</h1>' +
@@ -110,10 +113,11 @@ function buildProgressBannerHTML(result) {
    ------------------------------------------------------------ */
 
 function buildEmptyStateCardHTML() {
+  var req = getActiveRequirements();
   var items = [
-    { key: 'total', label: '총학점<br>130학점' },
-    { key: 'major', label: '전공필수<br>12과목' },
-    { key: 'general', label: '교양필수<br>39학점' },
+    { key: 'total', label: '총학점<br>' + req.totalRequired + '학점' },
+    { key: 'major', label: '전공필수<br>' + req.majorRequiredCount + '과목' },
+    { key: 'general', label: '교양필수<br>' + req.credits.general + '학점' },
     { key: 'cert', label: '졸업인증<br>영어 등' }
   ];
   var orbsHTML = items.map(function (item) {
@@ -258,24 +262,61 @@ function buildGeneralCardHTML(card) {
 
 function buildTotalCardHTML(card) {
   var pct = Math.min(100, Math.round((card.earned / card.required) * 100));
-  var badge = card.satisfied
-    ? '<span class="badge badge--ok">✓ 모았어요</span>'
-    : '<span class="badge badge--bad">' + Math.max(0, card.required - card.earned) + '학점 남음</span>';
+  var mc = card.majorCredits; // 전공 학점 (mock 에는 없음)
+  var majorShort = mc ? Math.max(0, mc.required - mc.earned) : 0;
+  var badge;
+  if (card.satisfied) {
+    badge = '<span class="badge badge--ok">✓ 모았어요</span>';
+  } else if (card.earned >= card.required && majorShort > 0) {
+    badge = '<span class="badge badge--bad">전공 ' + majorShort + '학점 부족</span>';
+  } else {
+    badge = '<span class="badge badge--bad">' + Math.max(0, card.required - card.earned) + '학점 남음</span>';
+  }
 
-  var remainingCredit = Math.max(0, card.required - card.earned);
+  // 전공 학점도 총학점에 들어가므로, 더 들어야 할 학점은 둘 중 큰 쪽
+  var remainingCredit = Math.max(0, card.required - card.earned, majorShort);
+  var majorDriven = majorShort > 0 && majorShort >= card.required - card.earned;
   var remainingSemesters = Math.max(0, 8 - computePastSemesters(state.year));
   var perSemester = remainingSemesters > 0 ? Math.ceil(remainingCredit / remainingSemesters) : remainingCredit;
+
+  var boxHTML;
+  if (card.satisfied) {
+    boxHTML = '<p><strong>졸업 학점을 모두 채웠어요</strong></p>';
+  } else {
+    boxHTML =
+      '<p><strong>남은 ' + remainingCredit + '학점</strong>' + (majorDriven ? ' (전공으로 채워야 해요)' : '') +
+        ' · 남은 ' + remainingSemesters + '학기 기준</p>' +
+      '<p><strong>학기당 약 ' + perSemester + '학점씩 들으면 제때 졸업할 수 있어요</strong></p>';
+  }
 
   return (
     '<div class="req-card">' +
       buildReqCardHeadHTML('total', '총학점', card.earned + ' / ' + card.required + '학점 이수', badge, null) +
       buildReqCardProgressHTML('total', pct) +
       '<div class="req-card__body">' +
-        '<div class="total-card__box">' +
-          '<p><strong>남은 ' + remainingCredit + '학점</strong> · 남은 ' + remainingSemesters + '학기 기준</p>' +
-          '<p><strong>학기당 약 ' + perSemester + '학점씩 들으면 제때 졸업할 수 있어요</strong></p>' +
-        '</div>' +
-        '<p class="total-card__detail">전공 ' + card.breakdown.major + '학점 · 교양 ' + card.breakdown.general + '학점 · 일반선택 ' + card.breakdown.free + '학점</p>' +
+        '<div class="total-card__box">' + boxHTML + '</div>' +
+        buildMajorCreditsRowHTML(mc) +
+        '<p class="total-card__detail">전공필수 ' + card.breakdown.major + '학점 · 교양필수 ' + card.breakdown.general + '학점 · 선택 과목 ' + card.breakdown.free + '학점</p>' +
+      '</div>' +
+    '</div>'
+  );
+}
+
+/* 총학점 카드 안의 "전공 학점" 줄. 130학점을 채워도 전공이 65학점보다 적으면 졸업할 수 없다. */
+function buildMajorCreditsRowHTML(mc) {
+  if (!mc) return '';
+  var rowBadge = mc.satisfied
+    ? '<span class="badge badge--ok">충족</span>'
+    : '<span class="badge badge--bad">' + Math.max(0, mc.required - mc.earned) + '학점 부족</span>';
+  return (
+    '<div class="area-row">' +
+      '<div class="area-row__text">' +
+        '<p class="area-row__name">전공 학점</p>' +
+        '<p class="area-row__desc">전공필수 · 전공기초 · 전공선택 합계 · 총학점과 별도로 채워야 해요</p>' +
+      '</div>' +
+      '<div class="area-row__right">' +
+        '<span class="area-row__fraction">' + mc.earned + ' / ' + mc.required + '</span>' +
+        rowBadge +
       '</div>' +
     '</div>'
   );
@@ -287,12 +328,17 @@ function buildCertCardHTML(card) {
     ? '<span class="badge badge--ok">✓ 모았어요</span>'
     : '<span class="badge badge--bad">미충족</span>';
 
+  var satisfiedBy = card.satisfiedBy || [];
   var optionsHTML = card.options.map(function (opt) {
-    var checked = state.certs.indexOf(opt.id) !== -1 ? ' checked' : '';
+    var byCert = state.certs.indexOf(opt.id) !== -1;
+    // 체크하지 않았는데 서버가 인정한 선택지 = 담은 과목으로 인정 (졸업인증실용영어 GEE3001)
+    var byCourse = !byCert && satisfiedBy.indexOf(opt.id) !== -1;
+    var attrs = (byCert || byCourse ? ' checked' : '') + (byCourse ? ' disabled' : '');
     return (
       '<label class="check-row">' +
-        '<input type="checkbox" class="check-row__input" data-cert-id="' + opt.id + '"' + checked + '>' +
+        '<input type="checkbox" class="check-row__input" data-cert-id="' + opt.id + '"' + attrs + '>' +
         '<span class="check-row__name">' + opt.label + '</span>' +
+        (byCourse ? '<span class="check-row__code">담은 과목으로 인정</span>' : '') +
       '</label>'
     );
   }).join('');
@@ -304,8 +350,60 @@ function buildCertCardHTML(card) {
       '<div class="req-card__body">' +
         '<p class="req-card__list-title">아래 중 하나만 충족하면 돼요</p>' +
         '<div class="check-list">' + optionsHTML + '</div>' +
-        '<p class="req-card__footnote">인정 기준은 PM 시안 예시 · 학사 규정 확인 후 확정</p>' +
+        '<p class="req-card__footnote">학과·입학연도별 기준 · 성적 유효기간 등 세부 규정은 학과에 확인하세요</p>' +
       '</div>' +
+    '</div>'
+  );
+}
+
+/* ------------------------------------------------------------
+   추가 졸업요건 (여의주 밖) — 마이크로전공, 컴공 졸업고사·TOPCIT
+   satisfied: true/false 는 담은 과목으로 판정, null 은 앱이 알 수 없어 직접 확인
+   ------------------------------------------------------------ */
+
+function countOpenExtraRequirements(result) {
+  return (result.extraRequirements || []).filter(function (e) { return e.satisfied !== true; }).length;
+}
+
+function buildExtraRequirementsHTML(result) {
+  var list = result.extraRequirements || [];
+  if (list.length === 0) return '';
+
+  var rowsHTML = list.map(function (e) {
+    var badge;
+    if (e.satisfied === true) badge = '<span class="badge badge--ok">충족</span>';
+    else if (e.satisfied === false) badge = '<span class="badge badge--bad">미충족</span>';
+    else badge = '<span class="badge badge--notice">직접 확인</span>';
+
+    var detailHTML = '';
+    if (e.components && e.components.length) {
+      detailHTML = '<ul class="extra-req__parts">' + e.components.map(function (c) {
+        return '<li class="extra-req__part' + (c.satisfied ? ' extra-req__part--ok' : '') + '">' +
+          (c.satisfied ? '✓ ' : '· ') + c.name + (c.course ? ' <span class="extra-req__course">' + c.course + '</span>' : '') +
+          '</li>';
+      }).join('') + '</ul>';
+    }
+    if (e.alternatives && e.alternatives.length) {
+      detailHTML += '<p class="area-row__desc">대신 인정: ' + e.alternatives.join(' · ') + '</p>';
+    }
+
+    return (
+      '<div class="area-row extra-req__row">' +
+        '<div class="area-row__text">' +
+          '<p class="area-row__name">' + e.name + '</p>' +
+          (e.rule ? '<p class="area-row__desc">' + e.rule + '</p>' : '') +
+          detailHTML +
+        '</div>' +
+        '<div class="area-row__right">' + badge + '</div>' +
+      '</div>'
+    );
+  }).join('');
+
+  return (
+    '<div class="card extra-req">' +
+      '<h3 class="extra-req__title">추가 졸업요건</h3>' +
+      '<p class="extra-req__hint">여의주 4개와 별도로 채워야 해요. "직접 확인"은 앱이 알 수 없는 항목이라 학과 공지로 확인하세요.</p>' +
+      rowsHTML +
     '</div>'
   );
 }
