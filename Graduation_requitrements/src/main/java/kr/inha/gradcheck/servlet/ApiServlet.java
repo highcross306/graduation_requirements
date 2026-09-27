@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -62,9 +63,26 @@ public abstract class ApiServlet extends HttpServlet {
 		return DataStore.get(getServletContext());
 	}
 
-	/** curriculum 파라미터로 교과과정을 찾는다. 없으면 400, 모르는 id 면 404. */
+	/**
+	 * curriculum 파라미터(또는 dept + year)로 교과과정을 찾는다. POST API 본문과 같은 규칙:
+	 * 둘 다 없으면 400, 둘 다 있는데 다르면 400, 모르는 id 면 404.
+	 */
 	protected Curriculum curriculum(HttpServletRequest req) {
-		String id = required(req, "curriculum");
+		String curriculum = optional(req, "curriculum");
+		String dept = optional(req, "dept");
+		String year = optional(req, "year");
+		String fromDeptYear = dept != null && year != null ? dept.toLowerCase(Locale.ROOT) + "_" + year : null;
+		String id;
+		if (curriculum != null) {
+			id = curriculum.toLowerCase(Locale.ROOT);
+			if (fromDeptYear != null && !id.equals(fromDeptYear)) {
+				throw ApiException.badRequest("curriculum 과 dept·year 가 다릅니다: " + id);
+			}
+		} else if (fromDeptYear != null) {
+			id = fromDeptYear;
+		} else {
+			throw ApiException.badRequest("curriculum 파라미터(또는 dept 와 year)가 필요합니다.");
+		}
 		return store().curriculum(id)
 				.orElseThrow(() -> ApiException.notFound("교과과정을 찾을 수 없습니다: " + id));
 	}

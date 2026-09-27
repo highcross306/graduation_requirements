@@ -2,6 +2,7 @@ package kr.inha.gradcheck.servlet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.nio.charset.CharacterCodingException;
 import java.util.List;
 import java.util.Locale;
 
@@ -78,6 +79,9 @@ public abstract class PostApiServlet extends jakarta.servlet.http.HttpServlet {
 			writeJson(resp, post(body));
 		} catch (ApiException e) {
 			ApiServlet.writeError(resp, e.status(), e.code(), e.getMessage());
+		} catch (CharacterCodingException e) {
+			// 본문이 UTF-8 이 아님 (Tomcat 기본 HTML 500 대신 JSON 400)
+			ApiServlet.writeError(resp, 400, "BAD_REQUEST", "요청 본문은 UTF-8 JSON 이어야 합니다.");
 		} catch (DataUnavailableException e) {
 			ApiServlet.writeError(resp, 503, "DATA_UNAVAILABLE", e.getMessage());
 		} catch (RuntimeException e) {
