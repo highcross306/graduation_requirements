@@ -203,7 +203,56 @@
             "creative",
             "swai"
           ],
-          "autoCheck": true
+          "autoCheck": true,
+          "components": [
+            {
+              "name": "핵심교양 6영역 GED6009",
+              "courses": [
+                "GED6009"
+              ]
+            },
+            {
+              "name": "창의영역 택1",
+              "courses": [
+                "GEE4001",
+                "GEE4004",
+                "GEE4005",
+                "GEE4006",
+                "GEE4007",
+                "GEE4009",
+                "GEE4010",
+                "GEE4012",
+                "GEE4013",
+                "GEE4014",
+                "GEE4016",
+                "GEE4018",
+                "GEE4019",
+                "GEE4020",
+                "GEE4021",
+                "GEE4025",
+                "GEE4026",
+                "GEE4027",
+                "GEE4028",
+                "GEE4029",
+                "GEE4030",
+                "GEE4031",
+                "GEE4032",
+                "GEE4033",
+                "GEE4034"
+              ]
+            },
+            {
+              "name": "일반교양 7영역 탄소중립 트랙 택1",
+              "courses": [
+                "GEE7008",
+                "GEE7012",
+                "GEE7013",
+                "GEE7014",
+                "GEE7015",
+                "GEE7016"
+              ]
+            }
+          ]
         }
       ],
       "certifications": [
@@ -400,7 +449,52 @@
             "creative",
             "swai"
           ],
-          "autoCheck": true
+          "autoCheck": true,
+          "components": [
+            {
+              "name": "핵심교양 6영역 GED6009",
+              "courses": [
+                "GED6009"
+              ]
+            },
+            {
+              "name": "창의영역 택1",
+              "courses": [
+                "GEE4001",
+                "GEE4004",
+                "GEE4005",
+                "GEE4006",
+                "GEE4007",
+                "GEE4009",
+                "GEE4010",
+                "GEE4012",
+                "GEE4013",
+                "GEE4014",
+                "GEE4016",
+                "GEE4018",
+                "GEE4019",
+                "GEE4020",
+                "GEE4021",
+                "GEE4025",
+                "GEE4026",
+                "GEE4035",
+                "GEE4036",
+                "GEE4037",
+                "GEE4038"
+              ]
+            },
+            {
+              "name": "일반교양 7영역 탄소중립 트랙 택1",
+              "courses": [
+                "GEE7008",
+                "GEE7012",
+                "GEE7013",
+                "GEE7014",
+                "GEE7015",
+                "GEE7016"
+              ]
+            }
+          ]
         }
       ],
       "certifications": [
@@ -595,7 +689,39 @@
             "core.area6",
             "swai"
           ],
-          "autoCheck": true
+          "autoCheck": true,
+          "components": [
+            {
+              "name": "미래사회와 소프트웨어-IT계열 GEB1143",
+              "courses": [
+                "GEB1143"
+              ]
+            },
+            {
+              "name": "핵심교양 6영역 GED6009",
+              "courses": [
+                "GED6009"
+              ]
+            },
+            {
+              "name": "일반교양 7영역 탄소중립/신기술(융합) 트랙 택1",
+              "courses": [
+                "GEE7005",
+                "GEE7006",
+                "GEE7007",
+                "GEE7008",
+                "GEE7010",
+                "GEE7011",
+                "GEE7012",
+                "GEE7013",
+                "GEE7014",
+                "GEE7015",
+                "GEE7016",
+                "GEE7018",
+                "GEE7019"
+              ]
+            }
+          ]
         },
         {
           "id": "gradExam",
@@ -804,7 +930,39 @@
             "core.area6",
             "swai"
           ],
-          "autoCheck": true
+          "autoCheck": true,
+          "components": [
+            {
+              "name": "미래사회와 소프트웨어-IT계열 GEB1143",
+              "courses": [
+                "GEB1143"
+              ]
+            },
+            {
+              "name": "핵심교양 6영역 GED6009",
+              "courses": [
+                "GED6009"
+              ]
+            },
+            {
+              "name": "일반교양 7영역 탄소중립/신기술(융합) 트랙 택1",
+              "courses": [
+                "GEE7005",
+                "GEE7006",
+                "GEE7007",
+                "GEE7008",
+                "GEE7010",
+                "GEE7011",
+                "GEE7012",
+                "GEE7013",
+                "GEE7014",
+                "GEE7015",
+                "GEE7016",
+                "GEE7018",
+                "GEE7019"
+              ]
+            }
+          ]
         },
         {
           "id": "gradExam",
