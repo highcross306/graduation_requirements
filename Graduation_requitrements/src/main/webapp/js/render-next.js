@@ -39,13 +39,6 @@ function renderNext() {
     });
 }
 
-/* 개설 여부 한 줄: 서버가 판단한 시간표(offeredBasis) 기준. 판단할 시간표가 없으면 빈 문자열. */
-function nextOfferedText(item, plan) {
-  if (item.offeredNextTerm == null || !plan.offeredBasis) return '';
-  var term = plan.offeredBasis.replace('-', '년 ') + '학기';
-  return item.offeredNextTerm ? ' · ' + term + ' 개설' : ' · ' + term + '엔 미개설';
-}
-
 function renderNextPlan(plan) {
   var el = document.getElementById('view-next');
   var VISIBLE = 6;
@@ -65,13 +58,13 @@ function renderNextPlan(plan) {
           '<h3 class="next-column-title"><span class="next-dot next-dot--bad"></span>놓치면 1년 밀려요 <span class="next-column-count">' + plan.urgent.length + '과목 · ' + urgentCredit + '학점</span></h3>' +
           (plan.urgent.length === 0
             ? '<p class="req-card__done-text">지금 급한 과목은 없어요.</p>'
-            : '<div class="next-list">' + plan.urgent.map(function (i) { return buildNextPlanRowHTML(i, 'urgent', plan); }).join('') + '</div>') +
+            : '<div class="next-list">' + plan.urgent.map(function (i) { return buildNextPlanRowHTML(i, 'urgent'); }).join('') + '</div>') +
         '</div>' +
         '<div class="card next-section">' +
           '<h3 class="next-column-title"><span class="next-dot next-dot--sub"></span>천천히 해도 괜찮아요 <span class="next-column-count">' + plan.relaxed.length + '과목 · ' + relaxedCredit + '학점</span></h3>' +
           (plan.relaxed.length === 0
             ? '<p class="req-card__done-text">해당하는 과목이 없어요.</p>'
-            : '<div class="next-list">' + visibleRelaxed.map(function (i) { return buildNextPlanRowHTML(i, 'relaxed', plan); }).join('') +
+            : '<div class="next-list">' + visibleRelaxed.map(function (i) { return buildNextPlanRowHTML(i, 'relaxed'); }).join('') +
               (relaxedMoreCount > 0 ? '<button type="button" class="req-card__more" id="next-relaxed-more-btn">+ ' + relaxedMoreCount + '과목 더 보기</button>' : '') +
               '</div>') +
         '</div>' +
@@ -84,7 +77,7 @@ function renderNextPlan(plan) {
       '<div class="dashboard-header">' +
         '<div class="dashboard-header__text">' +
           '<h1 class="dashboard-header__title">다음 학기 장바구니, 이렇게 담아보세요</h1>' +
-          '<p class="dashboard-header__subtitle">' + buildNextSubtitleHTML(plan) + '</p>' +
+          '<p class="dashboard-header__subtitle"><strong>' + plan.pastYear + '학년 ' + plan.pastSem + '학기</strong>까지 들은 기준이에요. 교과목 편성표의 권장 학기와 학수번호 학년을 기준으로 나눴어요. 실제 개설 여부는 수강편람에서 확인하세요.</p>' +
         '</div>' +
         '<div class="dashboard-header__actions">' +
           '<button type="button" class="btn btn--outline" data-action="go-survey">교양 과목도 추천 받기</button>' +
@@ -97,21 +90,7 @@ function renderNextPlan(plan) {
   bindNextEvents();
 }
 
-function buildNextSubtitleHTML(plan) {
-  var target = plan.nextTerm
-    ? ' <strong>' + plan.nextYear + '학년 ' + plan.nextSem + '학기(' + plan.nextTerm.replace('-', '년 ') + '학기)</strong>에 들을 과목이에요.'
-    : '';
-  var offered = plan.offeredBasis
-    ? ' 개설 여부는 ' + plan.offeredBasis.replace('-', '년 ') + '학기 시간표 기준이라, 수강편람에서 다시 확인하세요.'
-    : ' 실제 개설 여부는 수강편람에서 확인하세요.';
-  var extra = plan.extraSemester
-    ? ' <strong>정규 8학기를 넘겼어요.</strong> 남은 필수 과목부터 챙기세요.'
-    : '';
-  return '<strong>' + plan.pastYear + '학년 ' + plan.pastSem + '학기</strong>까지 들은 기준이에요.' + target +
-    ' 교과목 편성표의 권장 학기와 학수번호 학년을 기준으로 나눴어요.' + offered + extra;
-}
-
-function buildNextPlanRowHTML(item, kind, plan) {
+function buildNextPlanRowHTML(item, kind) {
   var categoryLabel = item.category === 'MAJOR_REQ' ? '전공필수' : '전공선택';
   var chipClass = item.category === 'MAJOR_REQ' ? 'chip--major' : 'chip--elective';
   var reasonClass = kind === 'urgent' ? 'next-row__reason--bad' : 'next-row__reason--sub';
@@ -120,7 +99,7 @@ function buildNextPlanRowHTML(item, kind, plan) {
       '<div class="next-row__main">' +
         orbSpan(item.category === 'MAJOR_REQ' ? 'major' : 'major', 'next-row__orb') +
         '<span class="next-row__name">' + item.name + '</span>' +
-        '<span class="next-row__meta">' + categoryLabel + ' · ' + item.credit + '학점' + nextOfferedText(item, plan) + '</span>' +
+        '<span class="next-row__meta">' + categoryLabel + ' · ' + item.credit + '학점</span>' +
       '</div>' +
       '<p class="next-row__reason ' + reasonClass + '">' + item.reason + '</p>' +
       '<button type="button" class="btn btn--outline next-row__done-btn" data-next-done="' + item.code + '" data-next-category="' + item.category + '">들었어요</button>' +
