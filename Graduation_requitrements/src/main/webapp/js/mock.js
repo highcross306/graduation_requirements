@@ -157,15 +157,19 @@ function evaluateState(payload) {
     };
   });
   var generalEarned = areas.reduce(function (s, a) { return s + a.earned; }, 0);
-  var generalRawSum = genTaken.reduce(function (s, c) { return s + c.credit; }, 0);
 
   /* 졸업인증 */
   var certSatisfied = certs.length > 0;
 
-  /* 전공선택 + 교양선택 + 일반선택 */
-  var freeCredit = taken
-    .filter(function (c) { return c.category === 'MAJOR_ELEC' || c.category === 'GEN_ELEC' || c.category === 'FREE_ELEC'; })
-    .reduce(function (s, c) { return s + c.credit; }, 0);
+  /* 총학점 구성: 전공(전공필수+전공선택) / 교양(교양필수+교양선택) / 일반선택 */
+  function sumCredit(categories) {
+    return taken
+      .filter(function (c) { return categories.indexOf(c.category) !== -1; })
+      .reduce(function (s, c) { return s + c.credit; }, 0);
+  }
+  var breakdownMajor = sumCredit(['MAJOR_REQ', 'MAJOR_ELEC']);
+  var breakdownGeneral = sumCredit(['GEN_REQ', 'GEN_ELEC']);
+  var freeCredit = sumCredit(['FREE_ELEC']);
 
   var cards = [
     {
@@ -174,7 +178,7 @@ function evaluateState(payload) {
       satisfied: totalCredit >= req.totalRequired,
       earned: totalCredit,
       required: req.totalRequired,
-      breakdown: { major: majorCredit, general: generalRawSum, free: freeCredit }
+      breakdown: { major: breakdownMajor, general: breakdownGeneral, free: freeCredit }
     },
     {
       key: 'major',
