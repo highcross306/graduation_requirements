@@ -8,11 +8,14 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import kr.inha.gradcheck.model.Course;
 import kr.inha.gradcheck.model.Curriculum;
+import kr.inha.gradcheck.model.Timetable;
 
 /**
  * 다음 학기 추천 (POST /api/next-semester, 화면 04 #next).
@@ -31,11 +34,15 @@ public final class RecommendService {
 	}
 
 	/**
-	 * @param pastYear 지난 학기(오늘이 속한 학기 포함)의 학년
-	 * @param nextYear 추천 대상 학기의 학년
+	 * @param pastYear      지난 학기(오늘이 속한 학기 포함)의 학년
+	 * @param nextYear      추천 대상 학기의 학년
+	 * @param nextTerm      추천 대상 학기 (예: "2027-1") = 입학연도 + 지난 학기 수로 계산
+	 * @param offeredBasis  개설 여부(offeredNextTerm)를 판단한 시간표 학기. 같은 학기 시간표가 없으면 null
+	 * @param extraSemester 추천 대상 학기가 8학기를 넘는지 (초과학기)
 	 */
 	public record Plan(Map<String, Object> curriculum, int pastSemesters, int pastYear, int pastSem, int nextYear,
-			int nextSem, List<Item> urgent, List<Item> relaxed) {
+			int nextSem, String nextTerm, String offeredBasis, boolean extraSemester, List<Item> urgent,
+			List<Item> relaxed) {
 	}
 
 	/**
@@ -45,22 +52,30 @@ public final class RecommendService {
 	 * @param recPosition 권장 학기를 1학년 1학기 = 1 부터 센 번호 (정렬용)
 	 * @param reason      화면에 보여줄 이유 문장
 	 * @param estimated   권장 학기를 편성표에서 확인하지 못하고 짐작했는지
+	 * @param offeredNextTerm 추천 대상 학기에 열릴지 (Plan.offeredBasis 시간표 기준). 판단할 시간표가 없으면 null
 	 */
 	public record Item(String code, String name, int credit, String category, Integer grade, int recPosition,
-			String reason, boolean estimated, List<String> prerequisites, boolean offeredThisTerm) {
+			String reason, boolean estimated, List<String> prerequisites, Boolean offeredNextTerm) {
 	}
 
 	/**
 	 * @param takenCodes    이미 들은 과목 학수번호 (대문자)
 	 * @param pastSemesters 입학 후 지난 학기 수 (0~8). null 이면 오늘 날짜로 계산
-	 * @param offered       최신 시간표에 분반이 있는지 확인하는 함수
+	 * @param timetableFor  학기("2027-1") → 개설 여부를 판단할 시간표 (DataStore::timetableFor)
 	 */
 	public static Plan nextSemester(Curriculum curriculum, Set<String> takenCodes, Integer pastSemesters,
-			Predicate<String> offered) {
+			Function<String, Optional<Timetable>> timetableFor) {
 		int past = pastSemesters != null ? pastSemesters : pastSemesters(curriculum.year(), LocalDate.now(SEOUL));
 		int nextPosition = past + 1;
 		int[] pastYs = toYearSem(past);
 		int[] nextYs = toYearSem(nextPosition);
+		String nextTerm = calendarTerm(curriculum.year(), nextPosition);
+
+		// 개설 여부: 추천 대상 학기와 같은 학기(1·2학기) 시간표로만 판단. 없으면 모름(null)
+		Optional<Timetable> basis = timetableFor.apply(nextTerm);
+		Set<String> offeredCodes = basis.map(t -> t.sections().stream().map(Timetable.Section::code)
+				.collect(Collectors.toSet())).orElse(null);
+		Function<String, Boolean> offered = code -> offeredCodes == null ? null : offeredCodes.contains(code);
 
 		// 전공필수 + 전공기초 과목 (교과과정표 순서)
 		Set<String> requiredCodes = CourseClassifier.majorRequiredCodes(curriculum.requirements());
@@ -95,11 +110,12 @@ public final class RecommendService {
 		cur.put("departmentCode", curriculum.departmentCode());
 		cur.put("department", curriculum.department());
 		cur.put("year", curriculum.year());
-		return new Plan(cur, past, pastYs[0], pastYs[1], nextYs[0], nextYs[1], urgent, relaxed);
+		return new Plan(cur, past, pastYs[0], pastYs[1], nextYs[0], nextYs[1], nextTerm,
+				basis.map(Timetable::term).orElse(null), nextPosition > 8, urgent, relaxed);
 	}
 
 	private static Item item(Course c, int recPosition, boolean urgent, Set<String> taken, Map<String, Course> byCode,
-			Predicate<String> offered) {
+			Function<String, Boolean> offered) {
 		List<String> prereq = c.prerequisites() == null ? List.of() : c.prerequisites();
 		boolean allPrereqTaken = !prereq.isEmpty() && prereq.stream().allMatch(taken::contains);
 		String terms = String.join("·", c.recommendedTerms().stream().map(String::valueOf).toList());
@@ -114,7 +130,7 @@ public final class RecommendService {
 		}
 		boolean estimated = c.note() != null && c.note().contains("추정");
 		return new Item(c.code(), c.name(), c.credits(), CourseClassifier.MAJOR_REQ, c.recommendedYear(), recPosition,
-				reason, estimated, prereq, offered.test(c.code()));
+				reason, estimated, prereq, offered.apply(c.code()));
 	}
 
 	/**
@@ -138,6 +154,12 @@ public final class RecommendService {
 		}
 		int elapsed = (ay - admissionYear) * 2 + sem;
 		return Math.max(0, Math.min(8, elapsed));
+	}
+
+	/** 입학 후 position 번째 학기의 달력 학기. 2025 입학 5번째 학기 → "2027-1". */
+	static String calendarTerm(int admissionYear, int position) {
+		int p = Math.max(1, position);
+		return (admissionYear + (p - 1) / 2) + "-" + (p % 2 == 1 ? 1 : 2);
 	}
 
 	/** 1학년 1학기 = 1, 1학년 2학기 = 2, 2학년 1학기 = 3 ... */
